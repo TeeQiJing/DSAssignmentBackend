@@ -21,12 +21,13 @@ import lombok.Setter;
 public class Card {
 
     // Card Num as the primary key of the table
-    @Id
+    
     @Column(name = "card_num")
     private String card_num;
     
     // Account Number as the foreign key of the table
   
+    @Id
     @Column(name = "account_number")
     private String account_number;
 

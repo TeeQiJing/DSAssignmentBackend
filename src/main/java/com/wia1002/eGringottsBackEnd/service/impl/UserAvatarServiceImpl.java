@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.wia1002.eGringottsBackEnd.exception.ResourceNotFoundException;
-import com.wia1002.eGringottsBackEnd.model.Card;
 import com.wia1002.eGringottsBackEnd.model.UserAvatar;
 import com.wia1002.eGringottsBackEnd.repository.UserAvatarRepository;
 import com.wia1002.eGringottsBackEnd.service.UserAvatarService;

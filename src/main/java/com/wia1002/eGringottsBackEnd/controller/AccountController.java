@@ -1,12 +1,15 @@
 package com.wia1002.eGringottsBackEnd.controller;
 
+import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,7 +23,6 @@ import com.wia1002.eGringottsBackEnd.service.UserAvatarService;
 
 import lombok.AllArgsConstructor;
 
-
 @RestController
 @AllArgsConstructor
 @RequestMapping("account")
@@ -31,12 +33,10 @@ public class AccountController {
     private UserAvatarService userAvatarService;
     private AccountService accountService;
 
-
     @PostMapping("/add")
     public ResponseEntity<String> createAccount(@RequestBody Account account) {
         // Save account details
         accountService.createAccount(account);
-
 
         // Save card details
         Card card = account.getCard();
@@ -56,13 +56,40 @@ public class AccountController {
     }
 
     @GetMapping("{account_number}")
-    public ResponseEntity<Account> getAccountById(@PathVariable("account_number") String account_number){
+    public ResponseEntity<Account> getAccountById(@PathVariable("account_number") String account_number) {
         Account account = accountService.getAccountById(account_number);
         account.setCard(
-            cardService.getCardById(account_number)
-            );
-            account.setUser_avatar(userAvatarService.getUserAvatarById(account_number));
+                cardService.getCardById(account_number));
+        account.setUser_avatar(userAvatarService.getUserAvatarById(account_number));
         return ResponseEntity.ok(account);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<Account>> getAllAccount() {
+        List<Account> accounts = accountService.getAllAccount();
+        for (Account account : accounts) {
+            account.setCard(cardService.getCardById(account.getAccount_number()));
+            account.setUser_avatar(userAvatarService.getUserAvatarById(account.getAccount_number()));
+        }
+        return ResponseEntity.ok(accounts);
+    }
+
+    @PutMapping("/update/{account_number}")
+    public ResponseEntity<Account> updateAccount(@PathVariable("account_number") String account_number,
+            @RequestBody Account updateAccount) {
+
+        updateAccount.getCard().setAccount_number(account_number);
+        updateAccount.getUser_avatar().setAccount_number(account_number);
+        Account updatedAccount = accountService.updateAccount(account_number, updateAccount);
+
+        return ResponseEntity.ok(updatedAccount);
+    }
+
+    @DeleteMapping("/delete/{account_number}")
+    public ResponseEntity<String> deleteAccount(@PathVariable("account_number") String account_number){
+        accountService.deleteAccount(account_number);
+        return ResponseEntity.ok("Account deleted successfully!");
+
     }
 
 }

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.wia1002.eGringottsBackEnd.exception.ResourceNotFoundException;
+import com.wia1002.eGringottsBackEnd.model.Account;
 import com.wia1002.eGringottsBackEnd.model.Card;
 import com.wia1002.eGringottsBackEnd.repository.CardRepository;
 import com.wia1002.eGringottsBackEnd.service.CardService;
@@ -19,10 +20,10 @@ public class CardServiceImpl implements CardService{
 
     @Override
     public Card getCardById(String account_number){
-        Card card = cardRepository.findByAccountNumber(account_number);
-        if(card == null){
-            throw new ResourceNotFoundException("Card is not exist with given Account Number : " + account_number);
-        }
+        Card card = cardRepository.findById(account_number).orElseThrow(
+            () -> new ResourceNotFoundException("Card is not exist with given Account Number : " + account_number)
+        );
+
 
         return card;
     }
@@ -33,4 +34,5 @@ public class CardServiceImpl implements CardService{
         return savedCard;
         
     }
+
 }
