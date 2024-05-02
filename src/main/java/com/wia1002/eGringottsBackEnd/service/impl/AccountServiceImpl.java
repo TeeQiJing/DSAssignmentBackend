@@ -45,6 +45,20 @@ public class AccountServiceImpl implements AccountService{
 
     @Override
     public Account createAccount(Account account) {
+        if(account.getBalance() >= 1000000){
+            account.setTrans_limit(10000);
+            account.setAccount_type("Platinum");
+            account.setInterest_rate(0.10);
+        }else if(account.getBalance() >= 300000){
+            account.setTrans_limit(8000);
+            account.setAccount_type("Golden");
+            account.setInterest_rate(0.04);
+        }else {
+            account.setTrans_limit(5000);
+            account.setAccount_type("Silver");
+            account.setInterest_rate(0.02);
+        }
+        
         Account savedAccount = accountRepository.save(account);
         return savedAccount;
     }
