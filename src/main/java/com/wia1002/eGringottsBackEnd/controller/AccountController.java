@@ -32,6 +32,7 @@ public class AccountController {
     private CardService cardService;
     private UserAvatarService userAvatarService;
     private AccountService accountService;
+    
 
     @PostMapping("/add")
     public ResponseEntity<String> createAccount(@RequestBody Account account) {
@@ -91,5 +92,8 @@ public class AccountController {
         return ResponseEntity.ok("Account deleted successfully!");
 
     }
+
+ 
+
 
 }
