@@ -39,6 +39,7 @@ public class AccountController {
     private CardService cardService;
     private UserAvatarService userAvatarService;
     private AccountService accountService;
+    
 
     @Autowired
     private AccountRepository accountRepository;
