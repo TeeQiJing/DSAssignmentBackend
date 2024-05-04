@@ -21,6 +21,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "account") 
 public class Account {
     // Account Number as primary key of the table
@@ -185,24 +186,25 @@ public class Account {
         this.secure_phrase = secure_phrase;
     }
 
-    public Account(String account_number, String username, String password, String dob, String address, String mobile,
-            String email, double balance, Card card,
-            UserAvatar user_avatar, String secure_phrase) {
-        this.account_number = account_number;
-        this.username = username;
-        this.password = password;
-        this.dob = dob;
-        this.address = address;
-        this.mobile = mobile;
-        this.email = email;
+    // public Account(String account_number, String username, String password, String dob, String address, String mobile,
+    //         String email, double balance, Card card,
+    //         UserAvatar user_avatar, String secure_phrase) {
+    //     this.account_number = account_number;
+    //     this.username = username;
+    //     this.password = password;
+    //     this.dob = dob;
+    //     this.address = address;
+    //     this.mobile = mobile;
+    //     this.email = email;
 
+        
 
-        this.balance = balance;
+    //     this.balance = balance;
 
-        this.card = card;
-        this.user_avatar = user_avatar;
-        this.secure_phrase = secure_phrase;
-    }
+    //     this.card = card;
+    //     this.user_avatar = user_avatar;
+    //     this.secure_phrase = secure_phrase;
+    // }
 
     public static String time(){
         LocalDateTime localDateTime=LocalDateTime.now();

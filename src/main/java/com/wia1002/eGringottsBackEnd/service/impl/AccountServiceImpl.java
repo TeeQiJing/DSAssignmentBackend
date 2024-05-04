@@ -3,6 +3,7 @@ package com.wia1002.eGringottsBackEnd.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.stereotype.Service;
 
 import com.wia1002.eGringottsBackEnd.exception.ResourceNotFoundException;
@@ -47,17 +48,26 @@ public class AccountServiceImpl implements AccountService{
     public Account createAccount(Account account) {
         if(account.getBalance() >= 1000000){
             account.setTrans_limit(10000);
-            account.setAccount_type("Platinum");
+            account.setAccount_type("Platinum Patronus");
             account.setInterest_rate(0.10);
         }else if(account.getBalance() >= 300000){
             account.setTrans_limit(8000);
-            account.setAccount_type("Golden");
+            account.setAccount_type("Golden Galleon");
             account.setInterest_rate(0.04);
         }else {
             account.setTrans_limit(5000);
-            account.setAccount_type("Silver");
+            account.setAccount_type("Silver Snitch");
             account.setInterest_rate(0.02);
         }
+
+        // Card card = account.getCard();
+        // card.setAccount_number(account.getAccount_number());
+        // cardRepository.save(card);
+
+        // UserAvatar userAvatar = account.getUser_avatar();
+        // userAvatar.setAccount_number(account.getAccount_number());
+        // userAvatarRepository.save(userAvatar);
+
         
         Account savedAccount = accountRepository.save(account);
         return savedAccount;
