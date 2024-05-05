@@ -1,12 +1,18 @@
 package com.wia1002.eGringottsBackEnd.service.impl;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.wia1002.eGringottsBackEnd.exception.ResourceNotFoundException;
 import com.wia1002.eGringottsBackEnd.model.UserAvatar;
 import com.wia1002.eGringottsBackEnd.repository.UserAvatarRepository;
 import com.wia1002.eGringottsBackEnd.service.UserAvatarService;
+
 
 import lombok.AllArgsConstructor;
 
@@ -35,4 +41,11 @@ public class UserAvatarServiceImpl implements UserAvatarService {
 
         return userAvatar;
     }
+
+
+   
+
+
+
+
 }

@@ -45,6 +45,9 @@ public class Transaction {
     @Column(name = "receiver_account_number")
     private String receiver_account_number;
 
+    @Column(name = "reference")
+    private String reference;
+
     @Column(name = "date_of_trans")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss")
     private LocalDateTime date_of_trans;
