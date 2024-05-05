@@ -58,8 +58,21 @@ public class Transaction {
     @Column(name = "category")
     private String category;
 
+    public Transaction(double amount,Account sender,Account receiver,LocalDateTime date,String category){
+        if(sender.getTrans_limit() >= amount && sender.getTrans_limit() > 0 && sender.getBalance() >= amount){
+            sender.setTrans_limit(sender.getTrans_limit() - amount);
+            this.sender = sender;
+            this.receiver = receiver;
+            this.sender_account_number = sender.getAccount_number();
+            this.receiver_account_number = receiver.getAccount_number();
+            sender.setBalance(sender.getBalance() - amount);
+            receiver.setBalance(receiver.getBalance() + amount);
+            
+        }
+        
+        
+        
+        
     }
-
     
-
-
+}
