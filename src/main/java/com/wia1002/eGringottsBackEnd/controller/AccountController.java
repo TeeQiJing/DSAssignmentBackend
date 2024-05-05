@@ -62,7 +62,7 @@ public class AccountController {
     @PostMapping("/addaccount")
     public ResponseEntity<Account> newAccount(@RequestBody Account newAccount) {
         if(accountRepository.findById(newAccount.getAccount_number()).isPresent())
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);;
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         
         Account account = accountService.createAccount(newAccount);
         

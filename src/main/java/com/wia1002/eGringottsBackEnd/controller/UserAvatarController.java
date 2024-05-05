@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RestController
 @AllArgsConstructor
 // @RequestMapping("")
-@CrossOrigin
+@CrossOrigin()
 public class UserAvatarController {
     @Autowired
     private UserAvatarRepository userAvatarRepository;
@@ -53,7 +53,7 @@ public class UserAvatarController {
         }
     }
 
-    @GetMapping("/getimg/{accountNumber}")
+    @GetMapping("/{accountNumber}")
     public UserAvatar getImage(@PathVariable String accountNumber) {
         return userAvatarRepository.findById(accountNumber).orElse(null);
     }

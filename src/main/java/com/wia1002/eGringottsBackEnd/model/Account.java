@@ -31,7 +31,7 @@ public class Account {
     private String account_number;
 
     // Log in using username & password
-    @Column(name = "username")
+    @Column(name = "username", unique = true)
     private String username;
     @Column(name = "password")
     private String password;
@@ -41,9 +41,9 @@ public class Account {
     private String dob;
     @Column(name = "address")
     private String address;
-    @Column(name = "mobile")
+    @Column(name = "mobile", unique = true)
     private String mobile;
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     private String email;
 
     // Transaction limit per day 
