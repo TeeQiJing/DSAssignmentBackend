@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RestController
 @AllArgsConstructor
 // @RequestMapping("")
-@CrossOrigin()
+@CrossOrigin("http://localhost:3000/")
 public class UserAvatarController {
     @Autowired
     private UserAvatarRepository userAvatarRepository;

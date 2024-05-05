@@ -5,9 +5,14 @@ package com.wia1002.eGringottsBackEnd.model;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import org.hibernate.annotations.NaturalId;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+
 import jakarta.persistence.Id;
+
+
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
@@ -43,6 +48,8 @@ public class Account {
     private String address;
     @Column(name = "mobile", unique = true)
     private String mobile;
+
+    @NaturalId(mutable = true)
     @Column(name = "email", unique = true)
     private String email;
 
@@ -72,6 +79,10 @@ public class Account {
     // confirming the secure phrase during login
     @Column(name = "secure_phrase")
     private String secure_phrase;
+
+
+    @Column(name = "is_enabled")
+    private boolean isEnabled;
 
    
 

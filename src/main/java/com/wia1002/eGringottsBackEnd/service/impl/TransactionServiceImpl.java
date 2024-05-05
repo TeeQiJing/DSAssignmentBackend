@@ -31,8 +31,8 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public Transaction createTransaction(Transaction transaction) {
-        Account sender = accountService.getAccountById(transaction.getSender_account_number());
-        Account receiver = accountService.getAccountById(transaction.getReceiver_account_number());
+        Account sender = accountService.getAccountById(transaction.getSender().getAccount_number());
+        Account receiver = accountService.getAccountById(transaction.getReceiver().getAccount_number());
         if (sender.getTrans_limit() >= transaction.getAmount()
                 && sender.getTrans_limit() > 0
                 && sender.getBalance() >= transaction.getAmount()) {
