@@ -9,7 +9,7 @@ import com.wia1002.eGringottsBackEnd.model.ContactList;
 
 import jakarta.persistence.criteria.From;
 import java.util.List;
-public interface ContactListRepository extends JpaRepository<ContactList, String> {
+public interface ContactListRepository extends JpaRepository<ContactList, Long> {
     @Query("SELECT t FROM ContactList t WHERE t.username = :username ORDER BY t.user_created_name ASC")
     List<ContactList> getContactLists(@Param("username") String username);
 
