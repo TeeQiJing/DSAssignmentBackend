@@ -2,7 +2,7 @@ package com.wia1002.eGringottsBackEnd.model;
 
 import java.time.LocalDateTime;
 
-
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,6 +15,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -22,6 +23,8 @@ import lombok.Setter;
 @Entity
 @Table(name = "transaction") 
 public class Transaction {
+    /*@GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator") */
     @Id
     @Column(name = "transaction_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,6 +46,7 @@ public class Transaction {
     private String receiver_account_number;
 
     @Column(name = "date_of_trans")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss")
     private LocalDateTime date_of_trans;
 
     @Column(name = "category")
@@ -64,6 +68,5 @@ public class Transaction {
         
         
     }
-    
     
 }
