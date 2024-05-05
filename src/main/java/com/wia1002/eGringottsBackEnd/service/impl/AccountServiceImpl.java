@@ -3,21 +3,30 @@ package com.wia1002.eGringottsBackEnd.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
+import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
+// import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.wia1002.eGringottsBackEnd.exception.ResourceNotFoundException;
 import com.wia1002.eGringottsBackEnd.model.Account;
 import com.wia1002.eGringottsBackEnd.model.Card;
+import com.wia1002.eGringottsBackEnd.model.ConfirmationToken;
 import com.wia1002.eGringottsBackEnd.model.UserAvatar;
 import com.wia1002.eGringottsBackEnd.repository.AccountRepository;
 import com.wia1002.eGringottsBackEnd.repository.CardRepository;
+import com.wia1002.eGringottsBackEnd.repository.ConfirmationTokenRepository;
 import com.wia1002.eGringottsBackEnd.repository.UserAvatarRepository;
 import com.wia1002.eGringottsBackEnd.service.AccountService;
+import com.wia1002.eGringottsBackEnd.service.EmailService;
 
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @AllArgsConstructor
+// @RequiredArgsConstructor
 public class AccountServiceImpl implements AccountService {
     @Autowired
     private AccountRepository accountRepository;
@@ -26,6 +35,15 @@ public class AccountServiceImpl implements AccountService {
 
     @Autowired
     private UserAvatarRepository userAvatarRepository;
+
+    @Autowired
+    ConfirmationTokenRepository confirmationTokenRepository;
+
+    @Autowired
+    EmailService emailService;
+
+    
+  
 
     @Override
     public Account getAccountById(String account_number){
@@ -39,18 +57,21 @@ public class AccountServiceImpl implements AccountService {
     public Account createAccount(Account account) {
         if (account.getBalance() >= 1000000) {
             account.setTrans_limit(10000);
-            account.setAccount_type("Platinum");
+            account.setAccount_type("Platinum Patronus");
             account.setInterest_rate(0.10);
         } else if (account.getBalance() >= 300000) {
             account.setTrans_limit(8000);
-            account.setAccount_type("Golden");
+            account.setAccount_type("Golden Galleon");
             account.setInterest_rate(0.04);
         } else {
             account.setTrans_limit(5000);
-            account.setAccount_type("Silver");
+            account.setAccount_type("Silver Snitch");
             account.setInterest_rate(0.02);
         }
 
+        // account.setPassword(passwordEncoder.encode(account.getPassword()));
+        
+        
         Account savedAccount = accountRepository.save(account);
         return savedAccount;
     }
@@ -111,5 +132,47 @@ public class AccountServiceImpl implements AccountService {
         accountRepository.deleteById(account_number);
 
     }
+
+    @Override
+    public ResponseEntity<?> saveAccount(Account account) {
+        // if (accountRepository.existsByEmail(account.getEmail())) {
+        //     return ResponseEntity.badRequest().body("Error: Email is already in use!");
+        // }
+        // accountRepository.save(account);
+
+        ConfirmationToken confirmationToken = new ConfirmationToken();
+        confirmationToken.setAccount_number(account.getAccount_number());
+        confirmationToken.setConfirmationToken(ConfirmationToken.generateRandomString());
+
+        confirmationTokenRepository.save(confirmationToken);
+
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setTo(account.getEmail());
+        mailMessage.setSubject("Complete Registration!");
+        mailMessage.setText("To confirm your account, please click here : "
+                +"http://localhost:8080/account/confirm-account?token="+confirmationToken.getConfirmationToken());
+        emailService.sendEmail(mailMessage);
+
+        System.out.println("Confirmation Token: " + confirmationToken.getConfirmationToken());
+        return ResponseEntity.ok("Verify email by the link sent on your email address");
+    }
+
+    @Override
+    public ResponseEntity<?> confirmEmail(String confirmationToken) {
+        ConfirmationToken token = confirmationTokenRepository.findByConfirmationToken(confirmationToken);
+
+        if(token != null)
+        {
+            Account account = accountRepository.findById(token.getAccount_number()).get();
+            account.setEnabled(true);
+            accountRepository.save(account);
+            confirmationTokenRepository.delete(token);
+
+            return ResponseEntity.ok("Email verified successfully!");
+        }
+        return ResponseEntity.badRequest().body("Error: Couldn't verify email");
+    }
+
+
 
 }

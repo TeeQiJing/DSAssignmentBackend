@@ -3,6 +3,8 @@ package com.wia1002.eGringottsBackEnd.service;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
+
 import com.wia1002.eGringottsBackEnd.model.Account;
 
 public interface AccountService {
@@ -11,6 +13,10 @@ public interface AccountService {
     List<Account> getAllAccount();
     Account updateAccount(String account_number, Account updatedAccount);
     void deleteAccount(String account_number);
+  
+    ResponseEntity<?> saveAccount(Account account);
+
+    ResponseEntity<?> confirmEmail(String confirmationToken);
 }
 
 

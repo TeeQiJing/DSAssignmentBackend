@@ -5,9 +5,12 @@ import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
@@ -45,6 +48,9 @@ public class Transaction {
     @Column(name = "receiver_account_number")
     private String receiver_account_number;
 
+    @Column(name = "reference")
+    private String reference;
+
     @Column(name = "date_of_trans")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss")
     private LocalDateTime date_of_trans;
@@ -52,8 +58,21 @@ public class Transaction {
     @Column(name = "category")
     private String category;
 
+    public Transaction(double amount,Account sender,Account receiver,LocalDateTime date,String category){
+        if(sender.getTrans_limit() >= amount && sender.getTrans_limit() > 0 && sender.getBalance() >= amount){
+            sender.setTrans_limit(sender.getTrans_limit() - amount);
+            this.sender = sender;
+            this.receiver = receiver;
+            this.sender_account_number = sender.getAccount_number();
+            this.receiver_account_number = receiver.getAccount_number();
+            sender.setBalance(sender.getBalance() - amount);
+            receiver.setBalance(receiver.getBalance() + amount);
+            
+        }
+        
+        
+        
+        
     }
-
     
-
-
+}
