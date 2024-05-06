@@ -33,7 +33,7 @@ public class ConfirmationToken {
 
     @Id
     @Column(name = "account_number")
-    private String account_number;
+    private String accountNumber;
 
     @Column(name="confirmation_token")
     private String confirmationToken;

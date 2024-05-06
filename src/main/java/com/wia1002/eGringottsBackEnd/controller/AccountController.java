@@ -26,10 +26,13 @@ import org.springframework.web.bind.annotation.RestController;
 // import org.springframework.web.servlet.ModelAndView;
 
 import com.wia1002.eGringottsBackEnd.model.Account;
+import com.wia1002.eGringottsBackEnd.model.ConfirmationToken;
+import com.wia1002.eGringottsBackEnd.model.UserAvatar;
 // import com.wia1002.eGringottsBackEnd.model.Card;
 // import com.wia1002.eGringottsBackEnd.model.ConfirmationToken;
 // import com.wia1002.eGringottsBackEnd.model.UserAvatar;
 import com.wia1002.eGringottsBackEnd.repository.AccountRepository;
+import com.wia1002.eGringottsBackEnd.repository.ConfirmationTokenRepository;
 // import com.wia1002.eGringottsBackEnd.repository.CardRepository;
 // import com.wia1002.eGringottsBackEnd.repository.ConfirmationTokenRepository;
 // import com.wia1002.eGringottsBackEnd.repository.UserAvatarRepository;
@@ -66,8 +69,8 @@ public class AccountController {
     @Autowired
 	private EmailSenderDemo senderService;
 
-    // @Autowired
-    // private ConfirmationTokenRepository confirmationTokenRepository;
+    @Autowired
+    private ConfirmationTokenRepository confirmationTokenRepository;
 
     // @Autowired
     // private EmailService emailService;
@@ -88,6 +91,13 @@ public class AccountController {
         account.setUser_avatar(userAvatarService.getUserAvatarById(account_number));
         return ResponseEntity.ok(account);
     }
+
+    @GetMapping("/getByEmail/{email}")
+    public ResponseEntity<Account> getAccountByEmail(@PathVariable("email") String email) {
+        Account account = accountRepository.findByEmailIgnoreCase(email);
+        return ResponseEntity.ok(account);
+    }
+
     @PostMapping("/addaccount")
     public ResponseEntity<Account> newAccount(@RequestBody Account newAccount) {
         if(accountRepository.findById(newAccount.getAccount_number()).isPresent())
@@ -101,10 +111,24 @@ public class AccountController {
         return ResponseEntity.ok(account);
     }
 
-    @RequestMapping(value="/confirm-account", method= {RequestMethod.GET, RequestMethod.POST})
-    public ResponseEntity<?> confirmUserAccount(@RequestParam("token")String confirmationToken) {
-        return accountService.confirmEmail(confirmationToken);
+    @GetMapping("gettoken/{accountNumber}")
+    public ConfirmationToken getToken(@PathVariable String accountNumber) {
+        return confirmationTokenRepository.findByAccountNumber(accountNumber);
     }
+
+    @GetMapping("/verify/{token}")
+    public ResponseEntity<?> verifyToken(@PathVariable String token) {
+
+      
+      return accountService.confirmEmail(token);
+
+    }
+
+    // @RequestMapping(value="/confirm-account", method= {RequestMethod.GET, RequestMethod.POST})
+    // public ResponseEntity<?> confirmUserAccount(@RequestParam("accountNumber")String accountNumber) {
+    //     ConfirmationToken confirmationToken = confirmationTokenRepository.finaccountNumber).get();
+    //     return ResponseEntity.ok(confirmationToken);
+    // }
 
 
     // public String applicationUrl(HttpServletRequest request) {
@@ -140,10 +164,10 @@ public class AccountController {
 
     @GetMapping("/login")
     public ResponseEntity<Account> getAccountByUsernameAndPassword(
-            @RequestParam("username") String username,
+            @RequestParam("email") String email,
             @RequestParam("password") String password) {
 
-        List<Account> accounts = accountRepository.findByUsernameAndPassword(username, password);
+        List<Account> accounts = accountRepository.findByEmailAndPassword(email, password);
 
         if (accounts.size() == 1) {
             Account account = accounts.get(0);

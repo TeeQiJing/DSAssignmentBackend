@@ -141,16 +141,15 @@ public class AccountServiceImpl implements AccountService {
         // accountRepository.save(account);
 
         ConfirmationToken confirmationToken = new ConfirmationToken();
-        confirmationToken.setAccount_number(account.getAccount_number());
+        confirmationToken.setAccountNumber(account.getAccount_number());
         confirmationToken.setConfirmationToken(ConfirmationToken.generateRandomString());
 
         confirmationTokenRepository.save(confirmationToken);
 
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(account.getEmail());
-        mailMessage.setSubject("Complete Registration!");
-        mailMessage.setText("To confirm your account, please click here : "
-                +"http://localhost:8080/account/confirm-account?token="+confirmationToken.getConfirmationToken());
+        mailMessage.setSubject("Verification Token to Complete E-Gringotts Account Registration");
+        mailMessage.setText("Thanks for Signing Up an E-Gringotts Account with Us!\nThis is your Confirmation Token (Case-Sensitive) : "+confirmationToken.getConfirmationToken());
         emailService.sendEmail(mailMessage);
 
         System.out.println("Confirmation Token: " + confirmationToken.getConfirmationToken());
@@ -163,12 +162,12 @@ public class AccountServiceImpl implements AccountService {
 
         if(token != null)
         {
-            Account account = accountRepository.findById(token.getAccount_number()).get();
+            Account account = accountRepository.findById(token.getAccountNumber()).get();
             account.setEnabled(true);
             accountRepository.save(account);
             confirmationTokenRepository.delete(token);
 
-            return ResponseEntity.ok("Email verified successfully!");
+            return ResponseEntity.ok("Email verified successfully! You will be redirected to login page.");
         }
         return ResponseEntity.badRequest().body("Error: Couldn't verify email");
     }

@@ -12,5 +12,5 @@ import com.wia1002.eGringottsBackEnd.model.UserAvatar;
 @Repository
 public interface UserAvatarRepository extends JpaRepository<UserAvatar, String> {
     @Query("SELECT t.image_path FROM UserAvatar t WHERE t.account_number=:test")
-    String getUserAvatars(@Param("test") String test);
+    byte[] getUserAvatars(@Param("test") String test);
 }

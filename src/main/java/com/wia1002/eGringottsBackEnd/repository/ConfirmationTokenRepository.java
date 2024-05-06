@@ -10,5 +10,6 @@ import com.wia1002.eGringottsBackEnd.model.ConfirmationToken;
 @Repository
 public interface ConfirmationTokenRepository extends JpaRepository<ConfirmationToken, String> {
     ConfirmationToken findByConfirmationToken(String confirmationToken);
+    ConfirmationToken findByAccountNumber(String accountNumber);
     
 } 
