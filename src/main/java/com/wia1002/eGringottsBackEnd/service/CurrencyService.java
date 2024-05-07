@@ -7,7 +7,7 @@ import com.wia1002.eGringottsBackEnd.model.Currency;
 public interface CurrencyService {
 
     //show a bunch of currency and conversion value
-    public void printCurrency();
+    public List<Double[]> printCurrency(String currency1, String currency2);
 
     //input 'from' and 'to' currencies along with their values to get the desired exchange based on the list of currencies provided before
     public List<Double[]> conversion(String currency1, String currency2, double value);

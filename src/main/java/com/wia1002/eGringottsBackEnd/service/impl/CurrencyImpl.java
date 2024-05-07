@@ -33,8 +33,8 @@ public class CurrencyImpl implements CurrencyService{
     private CurrencyRepository currencyRepository;
 
     @Override
-    public void printCurrency() {
-        graph.print();
+    public List<Double[]> printCurrency(String currency1, String currency2) {
+        return currencyRepository.getValueAndProcessingFee(currency1, currency2);
     }
 
     @Override

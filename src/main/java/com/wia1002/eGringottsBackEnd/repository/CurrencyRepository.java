@@ -15,9 +15,7 @@ public interface CurrencyRepository extends JpaRepository<Currency, Double> {
     @Query("SELECT c.value, c.processingFee FROM Currency c WHERE c.sourceCoin = :sourceCoin AND c.destinationCoin = :destinationCoin")
     List<Double[]> getValueAndProcessingFee(@Param("sourceCoin") String sourceCoin, @Param("destinationCoin") String destinationCoin);
 
-        // @Query("SELECT c.value, c.processingFee FROM Currency c WHERE c.currencyType = :currencyType AND c.transactionType = :transactionType")
-        // List<Object[]> getVlueAndProcessingFee(@Param("currencyType") String currencyType, @Param("transactionType") String transactionType);
-    
-    
+
+
 }
 
