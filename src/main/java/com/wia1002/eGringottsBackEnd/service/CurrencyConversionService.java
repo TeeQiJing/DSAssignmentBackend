@@ -1,6 +1,5 @@
 package com.wia1002.eGringottsBackEnd.service;
 
-// import com.wia1002.eGringottsBackEnd.model.Coin;
 import com.wia1002.eGringottsBackEnd.model.Currency;
 
 public interface CurrencyConversionService {
