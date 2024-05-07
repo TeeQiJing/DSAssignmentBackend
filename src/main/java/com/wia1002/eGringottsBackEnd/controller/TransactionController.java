@@ -37,7 +37,8 @@ public class TransactionController {
         @GetMapping("/getTransactionHistory/{account_number}")
         public ResponseEntity<List<Transaction>> getTransactionHistory(@PathVariable("account_number") String account_number){
         List<Transaction> transactions =transactionService.getAllTransaction(account_number);
-         return ResponseEntity.ok(transactions);
+            
+        return ResponseEntity.ok(transactions);
         }
 
     @GetMapping("/getTransactionHistory/{account_number}/category/{category}")
@@ -50,7 +51,7 @@ public class TransactionController {
 
     @GetMapping("/getTransactionHistory/{account_number}/date/{date}")
     public ResponseEntity<List<Transaction>> getTransactionDate(@PathVariable("account_number") String account_number,@PathVariable("date") String date){
-    LocalDate date_of_trans=ChangeFormat(date);
+    LocalDate date_of_trans = ChangeFormat(date);
     List<Transaction> transactions=transactionService.getTransactionsByDate(account_number,date_of_trans);
         return ResponseEntity.ok(transactions);
 }

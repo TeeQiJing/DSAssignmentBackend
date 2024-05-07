@@ -5,9 +5,14 @@ package com.wia1002.eGringottsBackEnd.model;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import org.hibernate.annotations.NaturalId;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+
 import jakarta.persistence.Id;
+
+
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
@@ -31,7 +36,7 @@ public class Account {
     private String account_number;
 
     // Log in using username & password
-    @Column(name = "username")
+    @Column(name = "username", unique = true)
     private String username;
     @Column(name = "password")
     private String password;
@@ -41,9 +46,11 @@ public class Account {
     private String dob;
     @Column(name = "address")
     private String address;
-    @Column(name = "mobile")
+    @Column(name = "mobile", unique = true)
     private String mobile;
-    @Column(name = "email")
+
+    @NaturalId(mutable = true)
+    @Column(name = "email", unique = true)
     private String email;
 
     // Transaction limit per day 
@@ -72,6 +79,10 @@ public class Account {
     // confirming the secure phrase during login
     @Column(name = "secure_phrase")
     private String secure_phrase;
+
+
+    @Column(name = "is_enabled")
+    private boolean isEnabled;
 
    
 
