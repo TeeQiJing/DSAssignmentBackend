@@ -1,6 +1,7 @@
 package com.wia1002.eGringottsBackEnd.service;
 
-import com.wia1002.eGringottsBackEnd.model.Coin;
+// import com.wia1002.eGringottsBackEnd.model.Coin;
+import com.wia1002.eGringottsBackEnd.model.Currency;
 
 public interface CurrencyConversionService {
 
@@ -11,7 +12,7 @@ public interface CurrencyConversionService {
     public double conversion(String currency1, String currency2, double value);
 
     //add new currency
-    public void addCurrency(String name);
+    public void addCurrency(Currency currency);
 
     //update the balance in the user's account after deducting the processing fee
     public void deductProcessingFee(double processingFee);

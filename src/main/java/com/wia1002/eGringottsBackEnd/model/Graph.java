@@ -2,8 +2,18 @@ package com.wia1002.eGringottsBackEnd.model;
 
 import java.util.ArrayList;
 
+import org.springframework.stereotype.Component;
+
+
+// @Entity
+// @Table(name = "Graph")
+@Component
 public class Graph<T, N extends Comparable <N>> {
+
+   // @Id
+   // @Column(name = "Coin")
     Vertex<T,N> head;
+
     int size;
      
     public Graph()	{
