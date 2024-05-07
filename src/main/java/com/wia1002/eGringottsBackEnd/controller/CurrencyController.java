@@ -6,27 +6,35 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.service.annotation.GetExchange;
 
-import com.wia1002.eGringottsBackEnd.service.CurrencyConversionService;
+import java.util.List;
 
+import com.wia1002.eGringottsBackEnd.service.CurrencyService;
 import com.wia1002.eGringottsBackEnd.model.Currency;
 
 @RestController
 @RequestMapping("currencyConversion")
 @CrossOrigin
-public class CurrencyConversionController {
+public class CurrencyController {
 
     @Autowired
-    private CurrencyConversionService currencyConversionService;
+    private CurrencyService currencyService;
 
     @PostMapping("/addCurrency")
     public ResponseEntity<String> addCurrency(@RequestBody Currency currency) {
-        currencyConversionService.addCurrency(currency);
+        currencyService.addCurrency(currency);
         return new ResponseEntity<>("Added Successfully", HttpStatus.CREATED);
+    }
+
+    @GetMapping("/conversion/{currency1}/{currency2}/{changeValue}")
+    public List<Double[]> conversion(@PathVariable String currency1, @PathVariable String currency2, @PathVariable double changeValue) {
+        List<Double[]> result = currencyService.conversion(currency1, currency2, changeValue);
+        return result;
     }
 
     @GetMapping("/hello")

@@ -1,12 +1,14 @@
 package com.wia1002.eGringottsBackEnd.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
 import com.wia1002.eGringottsBackEnd.model.Graph;
 import com.wia1002.eGringottsBackEnd.repository.CurrencyRepository;
-import com.wia1002.eGringottsBackEnd.service.CurrencyConversionService;
+import com.wia1002.eGringottsBackEnd.service.CurrencyService;
 
 import com.wia1002.eGringottsBackEnd.model.Currency;
 
@@ -19,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Data
 
 @Service
-public class CurrencyConversionImpl implements CurrencyConversionService{
+public class CurrencyImpl implements CurrencyService{
     
     @Autowired
     private Graph<String, Double> graph;
@@ -36,8 +38,10 @@ public class CurrencyConversionImpl implements CurrencyConversionService{
     }
 
     @Override
-    public double conversion(String currency1, String currency2, double value) {
-        return value;
+    public List<Double[]> conversion(String currency1, String currency2, double changeValue) {
+        List<Double[]> result = currencyRepository.getValueAndProcessingFee(currency1, currency2);
+        result.get(0)[0] *= changeValue;
+        return result;
     }
 
     @Override
