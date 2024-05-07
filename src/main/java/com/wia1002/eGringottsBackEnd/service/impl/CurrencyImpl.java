@@ -51,7 +51,6 @@ public class CurrencyImpl implements CurrencyService{
 
     @Override
     public void deductProcessingFee(double processingFee) {
-
     }
 
     @Override
