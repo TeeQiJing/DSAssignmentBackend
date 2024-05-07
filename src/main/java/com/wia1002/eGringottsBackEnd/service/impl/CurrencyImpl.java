@@ -50,6 +50,16 @@ public class CurrencyImpl implements CurrencyService{
     }
 
     @Override
+    public boolean deleteCurrency(double value) {
+        Currency upCurrency = currencyRepository.findById(value).orElse(null);
+        if (upCurrency != null) {
+            currencyRepository.deleteById(value);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public void deductProcessingFee(double processingFee) {
     }
 

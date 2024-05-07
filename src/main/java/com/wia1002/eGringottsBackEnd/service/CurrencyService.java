@@ -15,6 +15,9 @@ public interface CurrencyService {
     //add new currency
     public void addCurrency(Currency currency);
 
+    //update currency
+    public boolean deleteCurrency(double value);
+
     //update the balance in the user's account after deducting the processing fee
     public void deductProcessingFee(double processingFee);
 

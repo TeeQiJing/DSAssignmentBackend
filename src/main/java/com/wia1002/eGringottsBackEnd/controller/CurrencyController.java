@@ -6,8 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,6 +39,12 @@ public class CurrencyController {
     @GetMapping("/printCurrency/{currency1}/{currency2}")
     public List<Double[]> conversion(@PathVariable String currency1, @PathVariable String currency2) {
         return currencyService.printCurrency(currency1, currency2);
+    }
+
+    @DeleteMapping("/deleteCurrency/{value}")
+    public ResponseEntity<Boolean> deleteCurrency(@PathVariable double value) {
+        Boolean result = currencyService.deleteCurrency(value);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @GetMapping("/hello")
