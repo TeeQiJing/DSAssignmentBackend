@@ -16,6 +16,7 @@ import java.util.List;
 
 import com.wia1002.eGringottsBackEnd.service.CurrencyService;
 import com.wia1002.eGringottsBackEnd.model.Currency;
+import com.wia1002.eGringottsBackEnd.model.Vertex;
 
 @RestController
 @RequestMapping("currencyConversion")
@@ -41,15 +42,20 @@ public class CurrencyController {
         return currencyService.printCurrency(currency1, currency2);
     }
 
-    @DeleteMapping("/deleteCurrency/{value}")
-    public ResponseEntity<Boolean> deleteCurrency(@PathVariable double value) {
-        Boolean result = currencyService.deleteCurrency(value);
+    @DeleteMapping("/deleteCurrency/{number}")
+    public ResponseEntity<Boolean> deleteCurrency(@PathVariable int number) {
+        Boolean result = currencyService.deleteCurrency(number);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @GetMapping("/hello")
     public String hello() {
         return "Hello";
+    }
+
+    @GetMapping("/vertex/{str}")
+    public int getVertex(@PathVariable("str") String str) {
+        return currencyService.getVertex(str);
     }
 
 }

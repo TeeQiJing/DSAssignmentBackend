@@ -3,6 +3,7 @@ package com.wia1002.eGringottsBackEnd.service;
 import java.util.List;
 
 import com.wia1002.eGringottsBackEnd.model.Currency;
+import com.wia1002.eGringottsBackEnd.model.Vertex;
 
 public interface CurrencyService {
 
@@ -16,12 +17,14 @@ public interface CurrencyService {
     public void addCurrency(Currency currency);
 
     //update currency
-    public boolean deleteCurrency(double value);
+    public boolean deleteCurrency(int value);
 
     //update the balance in the user's account after deducting the processing fee
     public void deductProcessingFee(double processingFee);
 
     //include all relevant details about the transaction in the receipt
     public void receipt();
+
+    public int getVertex(String str);
     
 }

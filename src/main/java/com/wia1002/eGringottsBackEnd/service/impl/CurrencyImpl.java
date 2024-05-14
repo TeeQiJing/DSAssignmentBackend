@@ -1,5 +1,6 @@
 package com.wia1002.eGringottsBackEnd.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import com.wia1002.eGringottsBackEnd.repository.CurrencyRepository;
 import com.wia1002.eGringottsBackEnd.service.CurrencyService;
 
 import com.wia1002.eGringottsBackEnd.model.Currency;
+import com.wia1002.eGringottsBackEnd.model.Vertex;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,7 +26,7 @@ import lombok.NoArgsConstructor;
 public class CurrencyImpl implements CurrencyService{
     
     @Autowired
-    private Graph<String, Double> graph;
+    private Graph graph;
 
     @Autowired
     private Currency currency;
@@ -39,9 +41,24 @@ public class CurrencyImpl implements CurrencyService{
 
     @Override
     public List<Double[]> conversion(String currency1, String currency2, double changeValue) {
-        List<Double[]> result = currencyRepository.getValueAndProcessingFee(currency1, currency2);
-        result.get(0)[0] *= changeValue;
-        return result;
+        List<Double[]> list = new ArrayList<>();
+        // graph.loadDatabase();
+        list.add(graph.computeCurrency(currency1, currency2, changeValue));
+        // Double[] result = {changeValue*currencyRepository.getValueAndProcessingFee(currency1, currency2).get(0)[0], changeValue*currencyRepository.getValueAndProcessingFee(currency1, currency2).get(0)[1]};
+        // list.add(result);
+        return list;
+    }
+
+    @Override
+    public int getVertex(String currency1) {
+        try {
+            return graph.add();
+        }catch (Exception e) {
+            return 100;
+        }
+        // return 100;
+        // return graph.hasVertex(currency1);
+        // return true;
     }
 
     @Override
@@ -50,10 +67,10 @@ public class CurrencyImpl implements CurrencyService{
     }
 
     @Override
-    public boolean deleteCurrency(double value) {
-        Currency upCurrency = currencyRepository.findById(value).orElse(null);
+    public boolean deleteCurrency(int number) {
+        Currency upCurrency = currencyRepository.findById(number).orElse(null);
         if (upCurrency != null) {
-            currencyRepository.deleteById(value);
+            currencyRepository.deleteById(number);
             return true;
         }
         return false;

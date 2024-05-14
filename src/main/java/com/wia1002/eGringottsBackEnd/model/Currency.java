@@ -17,13 +17,17 @@ import lombok.NoArgsConstructor;
 @Table(name = "Currency")
 public class Currency {
 
+    @Id
+    @GeneratedValue
+    @Column(name = "No")
+    private int number;
+
     @Column(name = "Source Coin")
     private String sourceCoin;
 
     @Column(name = "Destination Coin")
     private String destinationCoin;
 
-    @Id
     @Column(name = "Value")
     private double value;
 
