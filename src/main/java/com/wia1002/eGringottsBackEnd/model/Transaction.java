@@ -18,11 +18,13 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
+// @NoArgsConstructor
+// @AllArgsConstructor
 @Entity
 @Table(name = "transaction") 
 public class Transaction {
+    
+
     /*@GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator") */
     @Id
@@ -52,6 +54,21 @@ public class Transaction {
     @Column(name = "category")
     private String category;
 
+    @Column(name ="reference")
+    private String reference;
+
+    @Column(name ="current_balance")
+    private double current_balance;
+
+    public Transaction(double amount, String sender_account_number, String receiver_account_number, String category) {
+        this.amount = amount;
+        this.sender_account_number = sender_account_number;
+        this.receiver_account_number = receiver_account_number;
+        this.date_of_trans=LocalDateTime.now();
+        this.category = category;
+    }
+
+    
     }
 
     

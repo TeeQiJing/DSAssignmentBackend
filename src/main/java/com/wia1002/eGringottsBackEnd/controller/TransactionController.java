@@ -33,7 +33,6 @@ public class TransactionController {
             return new ResponseEntity<>("Transaction successfully",HttpStatus.CREATED);
         }
 
-
         @GetMapping("/getTransactionHistory/{account_number}")
         public ResponseEntity<List<Transaction>> getTransactionHistory(@PathVariable("account_number") String account_number){
         List<Transaction> transactions =transactionService.getAllTransaction(account_number);
@@ -42,10 +41,9 @@ public class TransactionController {
 
     @GetMapping("/getTransactionHistory/{account_number}/category/{category}")
         public ResponseEntity<List<Transaction>> getTransactionCategory(@PathVariable("account_number") String account_number,@PathVariable("category") String category){
-            System.out.println(category);
         List<Transaction> transactions=transactionService.getTransactionByCategory(account_number,category);
         System.out.println(transactions.toString());
-            return ResponseEntity.ok(transactions);
+        return ResponseEntity.ok(transactions);
     }
 
     @GetMapping("/getTransactionHistory/{account_number}/date/{date}")

@@ -12,6 +12,8 @@ import com.wia1002.eGringottsBackEnd.model.Transaction;
 public interface TransactionService {
   Transaction createTransaction(Transaction transaction);
 
+  // Transaction createTransactionDeposit(String account_number,double amount);
+
   List<Transaction> getAllTransaction(String account_number);
 
   List<Transaction> getTransactionByCategory(String account_number, String category);

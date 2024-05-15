@@ -10,6 +10,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,8 +22,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @Table(name = "account") 
 public class Account {
-    // Account Number as primary key of the table
-
 
     @Id
     @Column(name = "account_number")
@@ -74,7 +73,6 @@ public class Account {
     public Account(String account_number, String username, String password, String dob, String address, String mobile,
             String email, double balance, Card card,
             UserAvatar user_avatar, String secure_phrase) {
-                System.out.println("Are you here             ");
         this.account_number = account_number;
         this.username = username;
         this.password = password;

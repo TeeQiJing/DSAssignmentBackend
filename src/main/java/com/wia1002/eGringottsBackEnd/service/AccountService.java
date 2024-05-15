@@ -11,6 +11,7 @@ public interface AccountService {
     List<Account> getAllAccount();
     Account updateAccount(String account_number, Account updatedAccount);
     void deleteAccount(String account_number);
+    Account deposit(String account_number, double amount);
 }
 
 

@@ -31,7 +31,7 @@ public class AccountServiceImpl implements AccountService {
     public Account getAccountById(String account_number){
         
        return accountRepository.findById(account_number).orElseThrow(
-                () -> new ResourceNotFoundException("Account does not exist with the given Account Number: " + account_number));
+                () -> new RuntimeException("Account does not exist with the given Account Number: " + account_number));
         
     }
 
@@ -64,7 +64,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Account updateAccount(String account_number, Account updatedAccount) {
         Account account = accountRepository.findById(account_number).orElseThrow(
-                () -> new ResourceNotFoundException(
+                () -> new RuntimeException(
                         "Account is not exist with given Account Number : " + account_number));
 
         account.setAddress(updatedAccount.getAddress());
@@ -76,7 +76,7 @@ public class AccountServiceImpl implements AccountService {
 
         // Card newCard = updatedAccount.getCard();
         Card newCard = cardRepository.findById(account_number).orElseThrow(
-                () -> new ResourceNotFoundException("Card is not exist with given Account Number : " + account_number));
+                () -> new RuntimeException("Card is not exist with given Account Number : " + account_number));
 
         newCard.setCard_num(updatedAccount.getCard().getCard_num());
         newCard.setCard_pin(updatedAccount.getCard().getCard_pin());
@@ -88,7 +88,7 @@ public class AccountServiceImpl implements AccountService {
         account.setCard(newCard);
 
         UserAvatar newUserAvatar = userAvatarRepository.findById(account_number).orElseThrow(
-                () -> new ResourceNotFoundException(
+                () -> new RuntimeException(
                         "User Avatar is not exist with given Account Number : " + account_number));
         newUserAvatar.setImage_path(updatedAccount.getUser_avatar().getImage_path());
         userAvatarRepository.save(newUserAvatar);
@@ -104,12 +104,21 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public void deleteAccount(String account_number) {
         Account account = accountRepository.findById(account_number).orElseThrow(
-                () -> new ResourceNotFoundException(
+                () -> new RuntimeException(
                         "Account is not exist with given Account Number : " + account_number));
         cardRepository.deleteById(account_number);
         userAvatarRepository.deleteById(account_number);
         accountRepository.deleteById(account_number);
 
+    }
+
+    @Override
+    public Account deposit(String account_number, double amount) {
+        Account account=getAccountById(account_number);
+        account.setBalance(account.getBalance()+amount);
+        Account savedAccount=accountRepository.save(account);
+        
+        return savedAccount;
     }
 
 }

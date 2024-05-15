@@ -4,6 +4,7 @@ import com.wia1002.eGringottsBackEnd.model.Account;
 import com.wia1002.eGringottsBackEnd.model.Transaction;
 import com.wia1002.eGringottsBackEnd.repository.AccountRepository;
 import com.wia1002.eGringottsBackEnd.repository.TransactionRepository;
+import com.wia1002.eGringottsBackEnd.service.AccountService;
 import com.wia1002.eGringottsBackEnd.service.TransactionService;
 import com.wia1002.eGringottsBackEnd.exception.ResourceNotFoundException;
 
@@ -23,18 +24,17 @@ public class TransactionServiceImpl implements TransactionService {
     private TransactionRepository transactionRepository;
     @Autowired
     private AccountRepository accountRepository;
-    @Autowired
-    private AccountServiceImpl accountServiceImpl;
+
+    private AccountService accountService;
 
     @Override
     public Transaction createTransaction(Transaction transaction) {
-        Account sender = accountServiceImpl.getAccountById(transaction.getSender_account_number());
-        Account receiver = accountServiceImpl.getAccountById(transaction.getReceiver_account_number());
+        Account sender = accountService.getAccountById(transaction.getSender_account_number());
+        Account receiver = accountService.getAccountById(transaction.getReceiver_account_number());
+        
         if (sender.getTrans_limit() >= transaction.getAmount()
                 && sender.getTrans_limit() > 0
                 && sender.getBalance() >= transaction.getAmount()) {
-                    System.out.println("gergegeb                    ");
-
             sender.setTrans_limit(sender.getTrans_limit() - transaction.getAmount());
             sender.setBalance(sender.getBalance() - transaction.getAmount());
             receiver.setBalance(receiver.getBalance() + transaction.getAmount());
@@ -45,9 +45,18 @@ public class TransactionServiceImpl implements TransactionService {
             Transaction savedTransaction = transactionRepository.save(transaction);
             return savedTransaction;
         } else
-            throw new ResourceNotFoundException("transaction failed");
+            throw new RuntimeException("transaction failed because insufficient balance or transaction limit");
 
     }
+
+    // @Override 
+    //  public Transaction createTransactionDeposit(String account_number,double amount){
+    //     Transaction newTransaction=new Transaction(amount,"",account_number,"Deposit");
+
+    //     Transaction savedTransaction = transactionRepository.save(newTransaction);
+    //     return savedTransaction;
+    //  }
+
 
     @Override
     public List<Transaction> getAllTransaction(String account_number) {

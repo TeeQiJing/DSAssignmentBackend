@@ -1,6 +1,7 @@
 package com.wia1002.eGringottsBackEnd.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.wia1002.eGringottsBackEnd.model.Account;
@@ -19,6 +21,7 @@ import com.wia1002.eGringottsBackEnd.model.Card;
 import com.wia1002.eGringottsBackEnd.model.UserAvatar;
 import com.wia1002.eGringottsBackEnd.service.AccountService;
 import com.wia1002.eGringottsBackEnd.service.CardService;
+import com.wia1002.eGringottsBackEnd.service.TransactionService;
 import com.wia1002.eGringottsBackEnd.service.UserAvatarService;
 
 import lombok.AllArgsConstructor;
@@ -32,6 +35,7 @@ public class AccountController {
     private CardService cardService;
     private UserAvatarService userAvatarService;
     private AccountService accountService;
+    private TransactionService transactionService;
     
 
     @PostMapping("/add")
@@ -55,6 +59,13 @@ public class AccountController {
 
         return new ResponseEntity<>("Account created successfully", HttpStatus.CREATED);
     }
+    // @PutMapping("/deposit/{account_number}")
+    // public ResponseEntity<Account> deposit(@PathVariable("account_number") String account_number,@RequestBody Map<String,Double>request){
+    //     double amount=request.get("amount");
+    //     Account account=accountService.deposit(account_number,amount); 
+    //     transactionService.createTransactionDeposit(account_number,amount);
+    //     return ResponseEntity.ok(account);
+    // }
 
     @GetMapping("{account_number}")
     public ResponseEntity<Account> getAccountById(@PathVariable("account_number") String account_number) {

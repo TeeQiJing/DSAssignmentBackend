@@ -10,11 +10,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.wia1002.eGringottsBackEnd.model.Transaction;
-
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
     @Query("SELECT t FROM Transaction t WHERE t.sender_account_number = :accountNumber OR t.receiver_account_number = :accountNumber ORDER BY t.date_of_trans DESC")
     List<Transaction> getTransactionsHistory(@Param("accountNumber") String account_number);
 
+//     @Query("SELECT t FROM Transaction t WHERE (t.sender_account_number = :accountNumber OR t.receiver_account_number = :accountNumber ORDER BY t.date_of_trans DESC")
+//     List<Transaction> getTransactionsHistoryAccount(@Param("accountNumber") String account_number);
+   
     @Query("SELECT t FROM Transaction t WHERE ( t.sender_account_number = :accountNumber OR t.receiver_account_number = :accountNumber ) AND t.category = :category ORDER BY t.date_of_trans DESC")
     List<Transaction> getTransactionsHistory_Category(@Param("accountNumber") String account_number,
             @Param("category") String category);
