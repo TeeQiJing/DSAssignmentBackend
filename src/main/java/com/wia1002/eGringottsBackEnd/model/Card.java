@@ -22,7 +22,7 @@ public class Card {
 
     // Card Num as the primary key of the table
     
-    @Column(name = "card_num")
+    @Column(name = "card_num", unique = true)
     private String card_num;
     
     // Account Number as the foreign key of the table

@@ -1,10 +1,24 @@
 package com.wia1002.eGringottsBackEnd.service;
 
-import com.wia1002.eGringottsBackEnd.model.EmailDetails;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
 
+@Service("emailService")
+public class EmailService {
 
-public interface EmailService {
-    void sendEmailAlert(EmailDetails emailDetails);
-    void sendEmailWithAttachment(EmailDetails emailDetails);
+    private JavaMailSender javaMailSender;
+
+    @Autowired
+    public EmailService(JavaMailSender javaMailSender) {
+        this.javaMailSender = javaMailSender;
+    }
+
+    @Async
+    public void sendEmail(SimpleMailMessage email) {
+        javaMailSender.send(email);
+    }
+
 }
-

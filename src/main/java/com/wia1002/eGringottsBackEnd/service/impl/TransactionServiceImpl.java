@@ -12,6 +12,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.management.RuntimeErrorException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,17 +26,17 @@ public class TransactionServiceImpl implements TransactionService {
     private TransactionRepository transactionRepository;
     @Autowired
     private AccountRepository accountRepository;
-
+    
     private AccountService accountService;
 
     @Override
     public Transaction createTransaction(Transaction transaction) {
-        Account sender = accountService.getAccountById(transaction.getSender_account_number());
-        Account receiver = accountService.getAccountById(transaction.getReceiver_account_number());
-        
+        Account sender = accountService.getAccountById(transaction.getSender().getAccount_number());
+        Account receiver = accountService.getAccountById(transaction.getReceiver().getAccount_number());
         if (sender.getTrans_limit() >= transaction.getAmount()
                 && sender.getTrans_limit() > 0
                 && sender.getBalance() >= transaction.getAmount()) {
+
             sender.setTrans_limit(sender.getTrans_limit() - transaction.getAmount());
             sender.setBalance(sender.getBalance() - transaction.getAmount());
             receiver.setBalance(receiver.getBalance() + transaction.getAmount());
@@ -45,22 +47,17 @@ public class TransactionServiceImpl implements TransactionService {
             Transaction savedTransaction = transactionRepository.save(transaction);
             return savedTransaction;
         } else
-            throw new RuntimeException("transaction failed because insufficient balance or transaction limit");
+            throw new RuntimeException("Insuficient Balance or Transaction Limit Exceeded!");
 
     }
-
-    // @Override 
-    //  public Transaction createTransactionDeposit(String account_number,double amount){
-    //     Transaction newTransaction=new Transaction(amount,"",account_number,"Deposit");
-
-    //     Transaction savedTransaction = transactionRepository.save(newTransaction);
-    //     return savedTransaction;
-    //  }
-
 
     @Override
     public List<Transaction> getAllTransaction(String account_number) {
         List<Transaction> transactions = transactionRepository.getTransactionsHistory(account_number);
+        // for(Transaction transaction: transactions){
+        //     transaction.setReceiver(accountRepository.findById(transaction.getReceiver_account_number()).get());
+        //     transaction.setSender(accountRepository.findById(transaction.getSender_account_number()).get());
+        // }
         return transactions;
     }
 
