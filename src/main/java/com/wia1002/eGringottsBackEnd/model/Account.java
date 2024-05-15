@@ -30,8 +30,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @Table(name = "account") 
 public class Account {
-    // Account Number as primary key of the table
-
 
     @Id
     @Column(name = "account_number")

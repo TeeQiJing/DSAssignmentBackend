@@ -61,10 +61,8 @@ public class TransactionController {
     }
 
     @GetMapping("/getTransactionHistory/{account_number}/category/{category}")
-    public ResponseEntity<List<Transaction>> getTransactionCategory(
-            @PathVariable("account_number") String account_number, @PathVariable("category") String category) {
-        System.out.println(category);
-        List<Transaction> transactions = transactionService.getTransactionByCategory(account_number, category);
+        public ResponseEntity<List<Transaction>> getTransactionCategory(@PathVariable("account_number") String account_number,@PathVariable("category") String category){
+        List<Transaction> transactions=transactionService.getTransactionByCategory(account_number,category);
         System.out.println(transactions.toString());
         return ResponseEntity.ok(transactions);
     }

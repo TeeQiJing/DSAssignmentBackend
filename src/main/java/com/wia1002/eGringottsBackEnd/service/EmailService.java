@@ -6,6 +6,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import com.wia1002.eGringottsBackEnd.model.EmailDetails;
+
 @Service("emailService")
 public class EmailService {
 

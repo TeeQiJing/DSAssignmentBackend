@@ -101,8 +101,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
+// @NoArgsConstructor
+// @AllArgsConstructor
 @Entity
 @Table(name = "transaction") 
 public class Transaction {

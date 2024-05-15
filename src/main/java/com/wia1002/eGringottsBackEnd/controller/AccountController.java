@@ -2,6 +2,7 @@ package com.wia1002.eGringottsBackEnd.controller;
 
 // import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -39,6 +40,7 @@ import com.wia1002.eGringottsBackEnd.repository.ConfirmationTokenRepository;
 import com.wia1002.eGringottsBackEnd.service.AccountService;
 import com.wia1002.eGringottsBackEnd.service.CardService;
 import com.wia1002.eGringottsBackEnd.service.EmailSenderDemo;
+import com.wia1002.eGringottsBackEnd.service.TransactionService;
 // import com.wia1002.eGringottsBackEnd.service.EmailService;
 import com.wia1002.eGringottsBackEnd.service.UserAvatarService;
 
@@ -48,7 +50,6 @@ import lombok.AllArgsConstructor;
 // import lombok.RequiredArgsConstructor;
 
 @RestController
-@AllArgsConstructor
 // @RequiredArgsConstructor
 @RequestMapping("account")
 @CrossOrigin("http://localhost:3000")
@@ -61,6 +62,7 @@ public class AccountController {
 
     @Autowired
     private AccountService accountService;
+    private TransactionService transactionService;
     
 
     @Autowired
