@@ -162,10 +162,10 @@ public class AccountController {
 
     }
 
-    @GetMapping("/login")
+    @GetMapping("/login/{email}/{password}")
     public ResponseEntity<Account> getAccountByUsernameAndPassword(
-            @RequestParam("email") String email,
-            @RequestParam("password") String password) {
+            @PathVariable("email") String email,
+            @PathVariable("password") String password) {
 
         List<Account> accounts = accountRepository.findByEmailAndPassword(email, password);
 

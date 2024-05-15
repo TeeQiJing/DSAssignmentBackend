@@ -1,5 +1,6 @@
 package com.wia1002.eGringottsBackEnd.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +69,9 @@ public class AccountServiceImpl implements AccountService {
             account.setAccount_type("Silver Snitch");
             account.setInterest_rate(0.02);
         }
+        account.setRegister_date(LocalDateTime.now());
+        account.setInitial_balance(account.getBalance());
+
 
         // account.setPassword(passwordEncoder.encode(account.getPassword()));
         

@@ -29,35 +29,62 @@ public class TransactionServiceImpl implements TransactionService {
     
     private AccountService accountService;
 
+    // @Override
+    // public Transaction createTransaction(Transaction transaction) {
+    //     Account sender = accountService.getAccountById(transaction.getSender().getAccount_number());
+    //     Account receiver = accountService.getAccountById(transaction.getReceiver().getAccount_number());
+    //     if (sender.getTrans_limit() >= transaction.getAmount()
+    //             && sender.getTrans_limit() > 0
+    //             && sender.getBalance() >= transaction.getAmount()) {
+
+    //         sender.setTrans_limit(sender.getTrans_limit() - transaction.getAmount());
+    //         sender.setBalance(sender.getBalance() - transaction.getAmount());
+            
+    //         receiver.setBalance(receiver.getBalance() + transaction.getAmount());
+    //         accountRepository.save(sender);
+    //         accountRepository.save(receiver);
+    //         if (transaction.getDate_of_trans() == null)
+    //             transaction.setDate_of_trans(LocalDateTime.now());
+    //         Transaction savedTransaction = transactionRepository.save(transaction);
+    //         return savedTransaction;
+    //     } else
+    //         throw new RuntimeException("Insuficient Balance or Transaction Limit Exceeded!");
+
+    // }
+
     @Override
-    public Transaction createTransaction(Transaction transaction) {
-        Account sender = accountService.getAccountById(transaction.getSender().getAccount_number());
-        Account receiver = accountService.getAccountById(transaction.getReceiver().getAccount_number());
-        if (sender.getTrans_limit() >= transaction.getAmount()
-                && sender.getTrans_limit() > 0
-                && sender.getBalance() >= transaction.getAmount()) {
+public Transaction createTransaction(Transaction transaction) {
+    Account sender = accountService.getAccountById(transaction.getSender_account_number());
+    Account receiver = accountService.getAccountById(transaction.getReceiver_account_number());
+    if (sender.getTrans_limit() >= transaction.getAmount()
+            && sender.getTrans_limit() > 0
+            && sender.getBalance() >= transaction.getAmount()) {
 
-            sender.setTrans_limit(sender.getTrans_limit() - transaction.getAmount());
-            sender.setBalance(sender.getBalance() - transaction.getAmount());
-            receiver.setBalance(receiver.getBalance() + transaction.getAmount());
-            accountRepository.save(sender);
-            accountRepository.save(receiver);
-            if (transaction.getDate_of_trans() == null)
-                transaction.setDate_of_trans(LocalDateTime.now());
-            Transaction savedTransaction = transactionRepository.save(transaction);
-            return savedTransaction;
-        } else
-            throw new RuntimeException("Insuficient Balance or Transaction Limit Exceeded!");
-
+        sender.setTrans_limit(sender.getTrans_limit() - transaction.getAmount());
+        sender.setBalance(sender.getBalance() - transaction.getAmount());
+        
+        receiver.setBalance(receiver.getBalance() + transaction.getAmount());
+        accountRepository.save(sender);
+        accountRepository.save(receiver);
+        
+        // Set the date_of_trans, sender, receiver, sender_balance, and receiver_balance
+        transaction.setDate_of_trans(LocalDateTime.now());
+        transaction.setSender(sender);
+        transaction.setReceiver(receiver);
+        transaction.setSender_balance(sender.getBalance());
+        transaction.setReceiver_balance(receiver.getBalance());
+        
+        Transaction savedTransaction = transactionRepository.save(transaction);
+        return savedTransaction;
+    } else {
+        throw new RuntimeException("Insufficient Balance or Transaction Limit Exceeded!");
     }
+}
+
 
     @Override
     public List<Transaction> getAllTransaction(String account_number) {
         List<Transaction> transactions = transactionRepository.getTransactionsHistory(account_number);
-        // for(Transaction transaction: transactions){
-        //     transaction.setReceiver(accountRepository.findById(transaction.getReceiver_account_number()).get());
-        //     transaction.setSender(accountRepository.findById(transaction.getSender_account_number()).get());
-        // }
         return transactions;
     }
 
