@@ -60,8 +60,6 @@ public class Transaction {
     @Column(name = "category")
     private String category;
 
-    @Column(name ="reference")
-    private String reference;
 
     @Column(name ="current_balance")
     private double current_balance;

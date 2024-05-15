@@ -20,21 +20,23 @@ import lombok.NoArgsConstructor;
 @Service
 public class Graph {
 
-   @Autowired
+   
    private Vertex head;
 
    @Autowired
    CurrencyRepository currencyRepository;
 
-   // public void loadDatabase() {
-   //    List<Currency> list = currencyRepository.findAll();
-   //     for (int i = 0; i < list.size(); i++) {
-   //         addVertex(list.get(i).getSourceCoin());
-   //         addVertex(list.get(i).getDestinationCoin());
-   //         addEdge(list.get(i).getSourceCoin(), list.get(i).getDestinationCoin(), list.get(i).getValue(), list.get(i).getProcessingFee());
-   //         addEdge(list.get(i).getDestinationCoin(), list.get(i).getSourceCoin(), 1 / list.get(i).getValue(), list.get(i).getProcessingFee());
-   //     }
-   // }
+   public void loadDatabase() {
+      List<Currency> list = currencyRepository.findAll();
+      System.out.println("uefeefehgueiuvgregrengreirevre "+list.size());
+       for (int i = 0; i < list.size(); i++) {
+         System.out.println("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK");
+           addVertex(list.get(i).getSourceCoin());
+           addVertex(list.get(i).getDestinationCoin());
+           addEdge(list.get(i).getSourceCoin(), list.get(i).getDestinationCoin(), list.get(i).getValue(), list.get(i).getProcessingFee());
+           addEdge(list.get(i).getDestinationCoin(), list.get(i).getSourceCoin(), 1 / list.get(i).getValue(), list.get(i).getProcessingFee());
+       }
+   }
 
    public int add() {
       try {
@@ -91,7 +93,7 @@ public class Graph {
    }
 
    public Double findProcessingFee(String source, String destination, double amount) {
-      return amount * dfsProcessingFee(getVertex(source), getVertex(destination), amount, new ArrayList<>());
+      return dfsProcessingFee(getVertex(source), getVertex(destination), amount, new ArrayList<>());
    }
   
   public Double dfsProcessingFee(Vertex source, Vertex destination, Double amount, ArrayList<Vertex> visited) {
@@ -221,7 +223,7 @@ public class Graph {
    public Vertex getVertex(String info) {
        Vertex temp = head;
        while (temp != null) {
-           if (temp.vertexInfo.equals(info)) {
+           if (info.equals(temp.vertexInfo)) {
                return temp;
            }
            temp = temp.nextVertex;

@@ -42,8 +42,9 @@ public class CurrencyImpl implements CurrencyService{
     @Override
     public List<Double[]> conversion(String currency1, String currency2, double changeValue) {
         List<Double[]> list = new ArrayList<>();
-        // graph.loadDatabase();
+        graph.loadDatabase();
         list.add(graph.computeCurrency(currency1, currency2, changeValue));
+        System.out.println(list.toString());
         // Double[] result = {changeValue*currencyRepository.getValueAndProcessingFee(currency1, currency2).get(0)[0], changeValue*currencyRepository.getValueAndProcessingFee(currency1, currency2).get(0)[1]};
         // list.add(result);
         return list;

@@ -40,6 +40,7 @@ import com.wia1002.eGringottsBackEnd.repository.ConfirmationTokenRepository;
 import com.wia1002.eGringottsBackEnd.service.AccountService;
 import com.wia1002.eGringottsBackEnd.service.CardService;
 import com.wia1002.eGringottsBackEnd.service.EmailSenderDemo;
+import com.wia1002.eGringottsBackEnd.service.TransactionService;
 // import com.wia1002.eGringottsBackEnd.service.EmailService;
 import com.wia1002.eGringottsBackEnd.service.UserAvatarService;
 
@@ -49,7 +50,6 @@ import lombok.AllArgsConstructor;
 // import lombok.RequiredArgsConstructor;
 
 @RestController
-@AllArgsConstructor
 // @RequiredArgsConstructor
 @RequestMapping("account")
 @CrossOrigin("http://localhost:3000")

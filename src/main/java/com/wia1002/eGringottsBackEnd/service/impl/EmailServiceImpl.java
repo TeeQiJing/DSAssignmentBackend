@@ -22,7 +22,7 @@ import java.io.File;
     
     @Service
     @Slf4j
-    public class EmailServiceImpl implements EmailService{
+    public class EmailServiceImpl {//implements EmailService
     
         @Autowired
         private JavaMailSender javaMailSender;
@@ -31,7 +31,7 @@ import java.io.File;
         private String senderEmail;
     
     
-        @Override
+       
         public void sendEmailAlert(EmailDetails emailDetails) {
             try {
                 SimpleMailMessage mailMessage = new SimpleMailMessage();
@@ -47,7 +47,7 @@ import java.io.File;
             }
         }
     
-        @Override
+       
         public void sendEmailWithAttachment(EmailDetails emailDetails) {
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
             MimeMessageHelper mimeMessageHelper;

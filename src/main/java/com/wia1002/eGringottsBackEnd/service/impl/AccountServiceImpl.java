@@ -172,6 +172,12 @@ public class AccountServiceImpl implements AccountService {
         return ResponseEntity.badRequest().body("Error: Couldn't verify email");
     }
 
+    @Override
+    public Account deposit(String account_number, double amount) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'deposit'");
+    }
+
 
 
 }

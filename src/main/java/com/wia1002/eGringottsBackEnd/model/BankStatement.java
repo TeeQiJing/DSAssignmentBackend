@@ -123,7 +123,7 @@ public class BankStatement {
                 .attachment(FILE)
                 .build();
 
-        emailService.sendEmailWithAttachment(emailDetails);
+        // emailService.sendEmailWithAttachment(emailDetails);
 
 
         return transactionList;
