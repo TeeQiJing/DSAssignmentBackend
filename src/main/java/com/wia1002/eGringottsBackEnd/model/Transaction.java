@@ -158,5 +158,7 @@ public class Transaction {
             this.receiver_balance = receiver.getBalance();
         }
     }
+
+    public Transaction(){}
 }
 

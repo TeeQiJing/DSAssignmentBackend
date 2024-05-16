@@ -1,5 +1,7 @@
 package com.wia1002.eGringottsBackEnd.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -49,5 +51,17 @@ public class CurrencyController {
     public String hello() {
         return "Hello";
     }
+
+    @GetMapping("/vertex/{str}")
+    public int getVertex(@PathVariable("str") String str) {
+        return currencyService.getVertex(str);
+    }
+
+    @GetMapping("/unique-coins")
+    public List<String> getUniqueCoins() {
+        return currencyService.getUniqueCoins();
+    }
+
+    
 
 }

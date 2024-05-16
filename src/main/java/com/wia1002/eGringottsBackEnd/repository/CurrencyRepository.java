@@ -16,6 +16,7 @@ public interface CurrencyRepository extends JpaRepository<Currency, Integer> {
     Double[] getValueAndProcessingFee(@Param("sourceCoin") String sourceCoin, @Param("destinationCoin") String destinationCoin);
 
 
-
+    @Query("SELECT DISTINCT c.destinationCoin FROM Currency c UNION SELECT DISTINCT c.sourceCoin FROM Currency c")
+    List<String> findUniqueCoins();
 }
 
