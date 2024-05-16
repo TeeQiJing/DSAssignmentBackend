@@ -35,13 +35,11 @@ public class CurrencyImpl implements CurrencyService{
 
     @Override
     public Double[] printCurrency(String currency1, String currency2) {
-        graph.loadDatabase();
-        return graph.printCurrency(currency1, currency2, 1);
+        return graph.computeCurrency(currency1, currency2, 1);
     }
 
     @Override
     public Double[] conversion(String currency1, String currency2, double amount) {
-        graph.loadDatabase();
         return graph.computeCurrency(currency1, currency2, amount);
     }
 

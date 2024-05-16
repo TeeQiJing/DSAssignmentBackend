@@ -35,11 +35,7 @@ public class Graph {
    }
 
    public Double[] computeCurrency(String source, String destination, double amount) {
-      Double[] result = {findValue(source, destination, amount), findProcessingFee(source, destination, amount)};
-      return result;
-   }
-
-   public Double[] printCurrency(String source, String destination, double amount) {
+      loadDatabase();
       Double[] result = {findValue(source, destination, amount), findProcessingFee(source, destination, amount)};
       return result;
    }
@@ -118,13 +114,13 @@ public class Graph {
   }
    
    public void clear() {   
-      head=null;
+      head = null;
    }
    
    public int getIndeg(String v)  {
-      if (hasVertex(v)==true)	{
+      if (hasVertex(v) == true)	{
          Vertex temp = head;
-         while (temp!=null) {
+         while (temp != null) {
             if ( temp.vertexInfo.equals( v ) )
                return temp.indeg;
             temp=temp.nextVertex;
@@ -221,10 +217,9 @@ public class Graph {
    }
 
    public boolean addEdge(String source, String destination, Double value, Double fee)   {
-      if (head==null)
+      if (hasEdge(source, destination)) {
          return false;
-      if (!hasVertex(source) || !hasVertex(destination)) 
-         return false;
+      }
       Vertex sourceVertex = head;
       while (sourceVertex!=null)	{
          if ( sourceVertex.vertexInfo.equals( source ) )   {
