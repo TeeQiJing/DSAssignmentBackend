@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import com.wia1002.eGringottsBackEnd.repository.CurrencyRepository;
 
@@ -17,10 +16,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 
-@Service
+@Component
 public class Graph {
 
-   
    private Vertex head;
 
    @Autowired
@@ -28,9 +26,7 @@ public class Graph {
 
    public void loadDatabase() {
       List<Currency> list = currencyRepository.findAll();
-      System.out.println("uefeefehgueiuvgregrengreirevre "+list.size());
        for (int i = 0; i < list.size(); i++) {
-         System.out.println("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK");
            addVertex(list.get(i).getSourceCoin());
            addVertex(list.get(i).getDestinationCoin());
            addEdge(list.get(i).getSourceCoin(), list.get(i).getDestinationCoin(), list.get(i).getValue(), list.get(i).getProcessingFee());
@@ -38,19 +34,8 @@ public class Graph {
        }
    }
 
-   public int add() {
-      try {
-         addVertex("Knut");
-      }catch(Exception e) {
-         return -1;
-      }
-      return 1;
-         //   addVertex("Sickle");
-         //   addEdge("Knut", "Sickle", 29.0, 0.01);
-         //   addEdge("Sickle", "Knut", 1 / 29.0, 0.01);
-   }
-
    public Double[] computeCurrency(String source, String destination, double amount) {
+      loadDatabase();
       Double[] result = {findValue(source, destination, amount), findProcessingFee(source, destination, amount)};
       return result;
    }
@@ -129,13 +114,13 @@ public class Graph {
   }
    
    public void clear() {   
-      head=null;
+      head = null;
    }
    
    public int getIndeg(String v)  {
-      if (hasVertex(v)==true)	{
+      if (hasVertex(v) == true)	{
          Vertex temp = head;
-         while (temp!=null) {
+         while (temp != null) {
             if ( temp.vertexInfo.equals( v ) )
                return temp.indeg;
             temp=temp.nextVertex;
@@ -232,10 +217,9 @@ public class Graph {
    }
 
    public boolean addEdge(String source, String destination, Double value, Double fee)   {
-      if (head==null)
+      if (hasEdge(source, destination)) {
          return false;
-      if (!hasVertex(source) || !hasVertex(destination)) 
-         return false;
+      }
       Vertex sourceVertex = head;
       while (sourceVertex!=null)	{
          if ( sourceVertex.vertexInfo.equals( source ) )   {
