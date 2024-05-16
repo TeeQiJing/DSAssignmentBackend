@@ -24,8 +24,6 @@ public interface CurrencyService {
     //include all relevant details about the transaction in the receipt
     public void receipt();
 
-    public int getVertex(String str);
-
     public List<String> getUniqueCoins() ;
     
 }
