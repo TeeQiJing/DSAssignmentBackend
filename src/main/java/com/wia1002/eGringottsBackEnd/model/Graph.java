@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import com.wia1002.eGringottsBackEnd.repository.CurrencyRepository;
 
@@ -17,10 +16,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 
-@Service
+@Component
 public class Graph {
 
-   
    private Vertex head;
 
    @Autowired
@@ -28,26 +26,12 @@ public class Graph {
 
    public void loadDatabase() {
       List<Currency> list = currencyRepository.findAll();
-      System.out.println("uefeefehgueiuvgregrengreirevre "+list.size());
        for (int i = 0; i < list.size(); i++) {
-         System.out.println("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK");
            addVertex(list.get(i).getSourceCoin());
            addVertex(list.get(i).getDestinationCoin());
            addEdge(list.get(i).getSourceCoin(), list.get(i).getDestinationCoin(), list.get(i).getValue(), list.get(i).getProcessingFee());
            addEdge(list.get(i).getDestinationCoin(), list.get(i).getSourceCoin(), 1 / list.get(i).getValue(), list.get(i).getProcessingFee());
        }
-   }
-
-   public int add() {
-      try {
-         addVertex("Knut");
-      }catch(Exception e) {
-         return -1;
-      }
-      return 1;
-         //   addVertex("Sickle");
-         //   addEdge("Knut", "Sickle", 29.0, 0.01);
-         //   addEdge("Sickle", "Knut", 1 / 29.0, 0.01);
    }
 
    public Double[] computeCurrency(String source, String destination, double amount) {

@@ -16,7 +16,6 @@ import java.util.List;
 
 import com.wia1002.eGringottsBackEnd.service.CurrencyService;
 import com.wia1002.eGringottsBackEnd.model.Currency;
-import com.wia1002.eGringottsBackEnd.model.Vertex;
 
 @RestController
 @RequestMapping("currencyConversion")
@@ -32,9 +31,9 @@ public class CurrencyController {
         return new ResponseEntity<>("Added Successfully", HttpStatus.CREATED);
     }
 
-    @GetMapping("/conversion/{currency1}/{currency2}/{changeValue}")
-    public List<Double[]> conversion(@PathVariable String currency1, @PathVariable String currency2, @PathVariable double changeValue) {
-        return currencyService.conversion(currency1, currency2, changeValue);
+    @GetMapping("/conversion/{currency1}/{currency2}/{amount}")
+    public Double[] conversion(@PathVariable String currency1, @PathVariable String currency2, @PathVariable double amount) {
+        return currencyService.conversion(currency1, currency2, amount);
     }
 
     @GetMapping("/printCurrency/{currency1}/{currency2}")
@@ -51,11 +50,6 @@ public class CurrencyController {
     @GetMapping("/hello")
     public String hello() {
         return "Hello";
-    }
-
-    @GetMapping("/vertex/{str}")
-    public int getVertex(@PathVariable("str") String str) {
-        return currencyService.getVertex(str);
     }
 
 }

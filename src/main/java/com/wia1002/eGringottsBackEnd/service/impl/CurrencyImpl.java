@@ -12,7 +12,6 @@ import com.wia1002.eGringottsBackEnd.repository.CurrencyRepository;
 import com.wia1002.eGringottsBackEnd.service.CurrencyService;
 
 import com.wia1002.eGringottsBackEnd.model.Currency;
-import com.wia1002.eGringottsBackEnd.model.Vertex;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -40,26 +39,9 @@ public class CurrencyImpl implements CurrencyService{
     }
 
     @Override
-    public List<Double[]> conversion(String currency1, String currency2, double changeValue) {
-        List<Double[]> list = new ArrayList<>();
+    public Double[] conversion(String currency1, String currency2, double amount) {
         graph.loadDatabase();
-        list.add(graph.computeCurrency(currency1, currency2, changeValue));
-        System.out.println(list.toString());
-        // Double[] result = {changeValue*currencyRepository.getValueAndProcessingFee(currency1, currency2).get(0)[0], changeValue*currencyRepository.getValueAndProcessingFee(currency1, currency2).get(0)[1]};
-        // list.add(result);
-        return list;
-    }
-
-    @Override
-    public int getVertex(String currency1) {
-        try {
-            return graph.add();
-        }catch (Exception e) {
-            return 100;
-        }
-        // return 100;
-        // return graph.hasVertex(currency1);
-        // return true;
+        return graph.computeCurrency(currency1, currency2, amount);
     }
 
     @Override

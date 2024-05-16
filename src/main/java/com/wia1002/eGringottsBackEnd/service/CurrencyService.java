@@ -11,7 +11,7 @@ public interface CurrencyService {
     public List<Double[]> printCurrency(String currency1, String currency2);
 
     //input 'from' and 'to' currencies along with their values to get the desired exchange based on the list of currencies provided before
-    public List<Double[]> conversion(String currency1, String currency2, double value);
+    public Double[] conversion(String currency1, String currency2, double value);
 
     //add new currency
     public void addCurrency(Currency currency);
@@ -24,7 +24,4 @@ public interface CurrencyService {
 
     //include all relevant details about the transaction in the receipt
     public void receipt();
-
-    public int getVertex(String str);
-    
 }
