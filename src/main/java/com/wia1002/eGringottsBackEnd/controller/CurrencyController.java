@@ -52,11 +52,6 @@ public class CurrencyController {
         return "Hello";
     }
 
-    @GetMapping("/vertex/{str}")
-    public int getVertex(@PathVariable("str") String str) {
-        return currencyService.getVertex(str);
-    }
-
     @GetMapping("/unique-coins")
     public List<String> getUniqueCoins() {
         return currencyService.getUniqueCoins();

@@ -78,6 +78,9 @@ public class Graph {
    }
 
    public Double findProcessingFee(String source, String destination, double amount) {
+      if (source.equals(destination)) {
+         return 0.0;
+      }
       return dfsProcessingFee(getVertex(source), getVertex(destination), amount, new ArrayList<>());
    }
   
