@@ -72,4 +72,10 @@ public class CurrencyImpl implements CurrencyService{
         return currencyRepository.findUniqueCoins();
     }
 
+    @Override
+    public int getVertex(String str) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getVertex'");
+    }
+
 }
