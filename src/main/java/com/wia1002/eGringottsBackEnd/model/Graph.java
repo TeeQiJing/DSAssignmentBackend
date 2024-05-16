@@ -38,6 +38,11 @@ public class Graph {
       Double[] result = {findValue(source, destination, amount), findProcessingFee(source, destination, amount)};
       return result;
    }
+
+   public Double[] printCurrency(String source, String destination, double amount) {
+      Double[] result = {findValue(source, destination, amount), findProcessingFee(source, destination, amount)};
+      return result;
+   }
    
    public Double findValue(String source, String destination, double amount) {
        return dfsValue(getVertex(source), getVertex(destination), amount, new ArrayList<>());

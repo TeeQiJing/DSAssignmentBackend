@@ -35,7 +35,8 @@ public class CurrencyImpl implements CurrencyService{
 
     @Override
     public Double[] printCurrency(String currency1, String currency2) {
-        return currencyRepository.getValueAndProcessingFee(currency1, currency2);
+        graph.loadDatabase();
+        return graph.printCurrency(currency1, currency2, 1);
     }
 
     @Override
