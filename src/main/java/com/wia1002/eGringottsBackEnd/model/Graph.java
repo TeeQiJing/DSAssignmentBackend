@@ -41,9 +41,6 @@ public class Graph {
    }
    
    public Double findValue(String source, String destination, double amount) {
-      if (source.equals(destination)) {
-         return 1.0;
-      }
        return dfsValue(getVertex(source), getVertex(destination), amount, new ArrayList<>());
    }
    
