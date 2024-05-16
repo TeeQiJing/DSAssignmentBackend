@@ -58,4 +58,11 @@ public class CurrencyController {
         return currencyService.getVertex(str);
     }
 
+    @GetMapping("/unique-coins")
+    public List<String> getUniqueCoins() {
+        return currencyService.getUniqueCoins();
+    }
+
+    
+
 }

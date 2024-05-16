@@ -26,5 +26,7 @@ public interface CurrencyService {
     public void receipt();
 
     public int getVertex(String str);
+
+    public List<String> getUniqueCoins() ;
     
 }

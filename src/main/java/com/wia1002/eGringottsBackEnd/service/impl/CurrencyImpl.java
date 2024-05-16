@@ -2,6 +2,7 @@ package com.wia1002.eGringottsBackEnd.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,7 +11,6 @@ import org.springframework.stereotype.Service;
 import com.wia1002.eGringottsBackEnd.model.Graph;
 import com.wia1002.eGringottsBackEnd.repository.CurrencyRepository;
 import com.wia1002.eGringottsBackEnd.service.CurrencyService;
-
 import com.wia1002.eGringottsBackEnd.model.Currency;
 import com.wia1002.eGringottsBackEnd.model.Vertex;
 
@@ -84,6 +84,11 @@ public class CurrencyImpl implements CurrencyService{
     @Override
     public void receipt() {
 
+    }
+
+    @Override
+    public List<String> getUniqueCoins() {
+        return currencyRepository.findUniqueCoins();
     }
 
 }
