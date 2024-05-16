@@ -37,7 +37,7 @@ public class CurrencyController {
     }
 
     @GetMapping("/printCurrency/{currency1}/{currency2}")
-    public List<Double[]> conversion(@PathVariable String currency1, @PathVariable String currency2) {
+    public Double[] conversion(@PathVariable String currency1, @PathVariable String currency2) {
         return currencyService.printCurrency(currency1, currency2);
     }
 

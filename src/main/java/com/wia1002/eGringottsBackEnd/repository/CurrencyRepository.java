@@ -13,7 +13,7 @@ import java.util.List;
 public interface CurrencyRepository extends JpaRepository<Currency, Integer> {
 
     @Query("SELECT c.value, c.processingFee FROM Currency c WHERE c.sourceCoin = :sourceCoin AND c.destinationCoin = :destinationCoin")
-    List<Double[]> getValueAndProcessingFee(@Param("sourceCoin") String sourceCoin, @Param("destinationCoin") String destinationCoin);
+    Double[] getValueAndProcessingFee(@Param("sourceCoin") String sourceCoin, @Param("destinationCoin") String destinationCoin);
 
 
 
