@@ -71,7 +71,4 @@ public class CurrencyImpl implements CurrencyService{
     public List<String> getUniqueCoins() {
         return currencyRepository.findUniqueCoins();
     }
-
-   
- 
 }
