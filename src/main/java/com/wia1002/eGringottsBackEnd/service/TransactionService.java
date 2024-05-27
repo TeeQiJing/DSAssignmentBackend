@@ -9,7 +9,9 @@ import java.util.List;
 import com.wia1002.eGringottsBackEnd.model.Transaction;
 
 public interface TransactionService {
-  Transaction createTransaction(Transaction transaction);
+  Transaction createTransaction(Transaction transaction, double deduct_amount, double add_amount);
+
+  // Transaction createTransactionDeposit(String account_number,double amount);
 
   List<Transaction> getAllTransaction(String account_number);
 
@@ -18,4 +20,6 @@ public interface TransactionService {
   List<Transaction> getTransactionsByDate(String account_number, LocalDate date_of_trans);
 
   List<Transaction> getTransactionsBetweenDates(String account_number, LocalDateTime startDate, LocalDateTime endDate);
+  
+
 }

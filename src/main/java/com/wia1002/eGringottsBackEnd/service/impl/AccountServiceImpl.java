@@ -1,5 +1,6 @@
 package com.wia1002.eGringottsBackEnd.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import com.wia1002.eGringottsBackEnd.repository.CardRepository;
 import com.wia1002.eGringottsBackEnd.repository.ConfirmationTokenRepository;
 import com.wia1002.eGringottsBackEnd.repository.UserAvatarRepository;
 import com.wia1002.eGringottsBackEnd.service.AccountService;
+import com.wia1002.eGringottsBackEnd.service.CurrencyService;
 import com.wia1002.eGringottsBackEnd.service.EmailService;
 
 import lombok.AllArgsConstructor;
@@ -42,6 +44,8 @@ public class AccountServiceImpl implements AccountService {
     @Autowired
     EmailService emailService;
 
+    @Autowired
+    private CurrencyService currencyService;
     
   
 
@@ -49,25 +53,30 @@ public class AccountServiceImpl implements AccountService {
     public Account getAccountById(String account_number){
         
        return accountRepository.findById(account_number).orElseThrow(
-                () -> new ResourceNotFoundException("Account does not exist with the given Account Number: " + account_number));
+                () -> new RuntimeException("Account does not exist with the given Account Number: " + account_number));
         
     }
 
     @Override
     public Account createAccount(Account account) {
-        if (account.getBalance() >= 1000000) {
-            account.setTrans_limit(10000);
-            account.setAccount_type("Platinum Patronus");
-            account.setInterest_rate(0.10);
-        } else if (account.getBalance() >= 300000) {
-            account.setTrans_limit(8000);
-            account.setAccount_type("Golden Galleon");
-            account.setInterest_rate(0.04);
-        } else {
-            account.setTrans_limit(5000);
-            account.setAccount_type("Silver Snitch");
-            account.setInterest_rate(0.02);
-        }
+        
+            if (currencyService.conversion(account.getCurrency(), "Knut", account.getBalance())[0] >= 10000) {
+                account.setTrans_limit(currencyService.conversion("Knut", account.getCurrency(), 5000)[0]);
+                account.setAccount_type("Platinum Patronus");
+                account.setInterest_rate(0.10);
+            } else if (currencyService.conversion(account.getCurrency(), "Knut", account.getBalance())[0] >= 8000) {
+                account.setTrans_limit(currencyService.conversion("Knut", account.getCurrency(), 3000)[0]);
+                account.setAccount_type("Golden Galleon");
+                account.setInterest_rate(0.04);
+            } else {
+                account.setTrans_limit(currencyService.conversion("Knut", account.getCurrency(), 1000)[0]);
+                account.setAccount_type("Silver Snitch");
+                account.setInterest_rate(0.02);
+            }
+        
+        account.setRegister_date(LocalDateTime.now());
+        account.setInitial_balance(account.getBalance());
+
 
         // account.setPassword(passwordEncoder.encode(account.getPassword()));
         
@@ -85,7 +94,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public Account updateAccount(String account_number, Account updatedAccount) {
         Account account = accountRepository.findById(account_number).orElseThrow(
-                () -> new ResourceNotFoundException(
+                () -> new RuntimeException(
                         "Account is not exist with given Account Number : " + account_number));
 
         account.setAddress(updatedAccount.getAddress());
@@ -97,7 +106,7 @@ public class AccountServiceImpl implements AccountService {
 
         // Card newCard = updatedAccount.getCard();
         Card newCard = cardRepository.findById(account_number).orElseThrow(
-                () -> new ResourceNotFoundException("Card is not exist with given Account Number : " + account_number));
+                () -> new RuntimeException("Card is not exist with given Account Number : " + account_number));
 
         newCard.setCard_num(updatedAccount.getCard().getCard_num());
         newCard.setCard_pin(updatedAccount.getCard().getCard_pin());
@@ -109,7 +118,7 @@ public class AccountServiceImpl implements AccountService {
         account.setCard(newCard);
 
         UserAvatar newUserAvatar = userAvatarRepository.findById(account_number).orElseThrow(
-                () -> new ResourceNotFoundException(
+                () -> new RuntimeException(
                         "User Avatar is not exist with given Account Number : " + account_number));
         newUserAvatar.setImage_path(updatedAccount.getUser_avatar().getImage_path());
         userAvatarRepository.save(newUserAvatar);
@@ -125,7 +134,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public void deleteAccount(String account_number) {
         Account account = accountRepository.findById(account_number).orElseThrow(
-                () -> new ResourceNotFoundException(
+                () -> new RuntimeException(
                         "Account is not exist with given Account Number : " + account_number));
         cardRepository.deleteById(account_number);
         userAvatarRepository.deleteById(account_number);
@@ -170,6 +179,12 @@ public class AccountServiceImpl implements AccountService {
             return ResponseEntity.ok("Email verified successfully! You will be redirected to login page.");
         }
         return ResponseEntity.badRequest().body("Error: Couldn't verify email");
+    }
+
+    @Override
+    public Account deposit(String account_number, double amount) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'deposit'");
     }
 
 

@@ -2,6 +2,7 @@ package com.wia1002.eGringottsBackEnd.controller;
 
 // import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -27,18 +28,21 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.wia1002.eGringottsBackEnd.model.Account;
 import com.wia1002.eGringottsBackEnd.model.ConfirmationToken;
+import com.wia1002.eGringottsBackEnd.model.Goblin;
 import com.wia1002.eGringottsBackEnd.model.UserAvatar;
 import com.wia1002.eGringottsBackEnd.model.Card;
 // import com.wia1002.eGringottsBackEnd.model.ConfirmationToken;
 // import com.wia1002.eGringottsBackEnd.model.UserAvatar;
 import com.wia1002.eGringottsBackEnd.repository.AccountRepository;
 import com.wia1002.eGringottsBackEnd.repository.ConfirmationTokenRepository;
+import com.wia1002.eGringottsBackEnd.repository.GoblinRepository;
 // import com.wia1002.eGringottsBackEnd.repository.CardRepository;
 // import com.wia1002.eGringottsBackEnd.repository.ConfirmationTokenRepository;
 // import com.wia1002.eGringottsBackEnd.repository.UserAvatarRepository;
 import com.wia1002.eGringottsBackEnd.service.AccountService;
 import com.wia1002.eGringottsBackEnd.service.CardService;
 import com.wia1002.eGringottsBackEnd.service.EmailSenderDemo;
+import com.wia1002.eGringottsBackEnd.service.TransactionService;
 // import com.wia1002.eGringottsBackEnd.service.EmailService;
 import com.wia1002.eGringottsBackEnd.service.UserAvatarService;
 
@@ -48,7 +52,6 @@ import lombok.AllArgsConstructor;
 // import lombok.RequiredArgsConstructor;
 
 @RestController
-@AllArgsConstructor
 // @RequiredArgsConstructor
 @RequestMapping("account")
 @CrossOrigin("http://localhost:3000")
@@ -61,10 +64,13 @@ public class AccountController {
 
     @Autowired
     private AccountService accountService;
+    private TransactionService transactionService;
     
 
     @Autowired
     private AccountRepository accountRepository;
+    @Autowired
+    private GoblinRepository goblinRepository;
 
     @Autowired
 	private EmailSenderDemo senderService;
@@ -163,10 +169,10 @@ public class AccountController {
 
     }
 
-    @GetMapping("/login")
+    @GetMapping("/login/{email}/{password}")
     public ResponseEntity<Account> getAccountByUsernameAndPassword(
-            @RequestParam("email") String email,
-            @RequestParam("password") String password) {
+            @PathVariable("email") String email,
+            @PathVariable("password") String password) {
 
         List<Account> accounts = accountRepository.findByEmailAndPassword(email, password);
 
@@ -177,6 +183,32 @@ public class AccountController {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
+    }
+
+    @GetMapping("/loginadmin/{email}/{password}")
+    public ResponseEntity<Goblin> getAdminByUsernameAndPassword(
+            @PathVariable("email") String email,
+            @PathVariable("password") String password) {
+
+        List<Goblin> goblins = goblinRepository.getGoblinByEmailAndPassword(email, password);
+
+        if (goblins.size() == 1) {
+            Goblin goblin = goblins.get(0);
+            
+
+            return ResponseEntity.ok(goblin);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    @PostMapping("/adminsignup")
+    public ResponseEntity<Goblin> newAdmin(@RequestBody Goblin newAdmin) {
+        if(goblinRepository.findById(newAdmin.getEmail()).isPresent())
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+
+        Goblin goblin = goblinRepository.save(newAdmin);
+        return ResponseEntity.ok(goblin);
     }
 
     // @PostMapping("/sendEmail")

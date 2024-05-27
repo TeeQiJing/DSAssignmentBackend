@@ -11,5 +11,6 @@ public interface ContactListService {
     ResponseEntity<ContactList> createContact(String username,ContactList contactList);
     List<ContactDTO> getAllContact(String account_number);
     List<ContactDTO> getContactListByCategory(String username, String category);
-    ResponseEntity<ContactList> isNewContact(String username, ContactList contactList);
+    boolean isNewContact(String username,String account_number, String mobile);
+    boolean isRegistered(String account_number,String mobile);
 }

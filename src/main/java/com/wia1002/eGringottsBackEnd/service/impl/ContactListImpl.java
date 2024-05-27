@@ -32,11 +32,9 @@ public class ContactListImpl implements ContactListService{
     @Override
     public ResponseEntity<ContactList> createContact(String username,ContactList contactList){
         contactList.setUsername(username);
-        ContactList savedContactList = contactListRepository.save(contactList);
-        if(savedContactList == null)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        else
-            return ResponseEntity.ok(contactList);
+        
+        ContactList savedContactList=contactListRepository.save(contactList);
+        return savedContactList;
     }
     @Override
     public List<ContactDTO> getAllContact(String username){
@@ -65,18 +63,19 @@ public class ContactListImpl implements ContactListService{
         // contactList=contactListRepository.getContactListsByUserCreatedName(username, category);
         return contactDTO;
     }
+    // @Override
+    // public boolean isNewContact(String username,String test){
+    //     return contactListRepository.getPeopleFromContact(username,test).isEmpty() &&!accountRepository.getPeopleFromAccount(test).isEmpty();
+    // }
     @Override
-    public ResponseEntity<ContactList> isNewContact(String username, ContactList contactList){
-        String account_number = contactList.getAccount_number();
-        String mobile = contactList.getContact_mobile();
-        if(contactListRepository.getPeopleFromContact(username, contactList.getAccount_number(), contactList.getContact_mobile()).isEmpty() && !accountRepository.getPeopleByAccountNumberAndMobile(account_number, mobile).isEmpty()){
-            return ResponseEntity.status(HttpStatus.CREATED).body(null);
-        }else if(!(contactListRepository.getPeopleFromContact(username, contactList.getAccount_number(), contactList.getContact_mobile()).isEmpty())){
-            // Already in contact list
-            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(null);
-        }else{
-            // Not in database
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        }
+    public boolean isNewContact(String username,String account_number, String mobile){
+        return contactListRepository.getPeopleFromContact(username,account_number, mobile).isEmpty();
     }
+
+    @Override
+    public boolean isRegistered(String account_number,String mobile){
+        return accountRepository.findByAccountNumberAndMobile(account_number, mobile).size()==1;
+    }
+
+
 }

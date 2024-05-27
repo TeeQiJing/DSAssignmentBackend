@@ -21,7 +21,7 @@ public class CardServiceImpl implements CardService{
     @Override
     public Card getCardById(String account_number){
         Card card = cardRepository.findById(account_number).orElseThrow(
-            () -> new ResourceNotFoundException("Card is not exist with given Account Number : " + account_number)
+            () -> new RuntimeException("Card is not exist with given Account Number : " + account_number)
         );
 
 

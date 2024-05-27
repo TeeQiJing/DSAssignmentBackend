@@ -36,7 +36,7 @@ public class UserAvatarServiceImpl implements UserAvatarService {
        @Override
         public UserAvatar getUserAvatarById(String account_number){
         UserAvatar userAvatar = userAvatarRepository.findById(account_number).orElseThrow(
-            () -> new ResourceNotFoundException("User Avatar is not exist with given Account Number : " + account_number)
+            () -> new RuntimeException("User Avatar is not exist with given Account Number : " + account_number)
         );
 
         return userAvatar;

@@ -17,6 +17,7 @@ public interface AccountService {
     ResponseEntity<?> saveAccount(Account account);
 
     ResponseEntity<?> confirmEmail(String confirmationToken);
+    Account deposit(String account_number, double amount);
 }
 
 

@@ -7,6 +7,8 @@ import java.time.format.DateTimeFormatter;
 
 import org.hibernate.annotations.NaturalId;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 
@@ -28,8 +30,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @Table(name = "account") 
 public class Account {
-    // Account Number as primary key of the table
-
 
     @Id
     @Column(name = "account_number")
@@ -63,11 +63,21 @@ public class Account {
     @Column(name = "balance")
     private double balance;
 
+    @Column(name = "currency")
+    private String currency;
+
+    @Column(name = "initial_balance")
+    private double initial_balance;
+
     @Column(name = "account_type")
     private String account_type;
 
     @Column(name = "signin_date")
     private String signin_date;
+
+    @Column(name = "register_date")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss")
+    private LocalDateTime register_date;
 
     @Transient
     private Card card;
