@@ -28,13 +28,17 @@ public class ContactListController {
     private ContactListService contactListService;
 
     @PostMapping("/{username}/add")
-    public ResponseEntity<String> createTransaction(@PathVariable("username") String username, @RequestBody ContactList contactList) {
-        if(contactListService.isNewContact(username,contactList.getAccount_number())){
+    public ResponseEntity<ContactList> addContact(@PathVariable("username") String username, @RequestBody ContactList contactList) {
+        ResponseEntity<ContactList> response = contactListService.isNewContact(username, contactList);
+
+        if (response.getStatusCode() == HttpStatus.CREATED) {
             contactListService.createContact(username,contactList);
-            return new ResponseEntity<>("Hehhehheh",HttpStatus.CREATED);
-        }else{
-            return new ResponseEntity<>("NOOOOOOOOOOO",HttpStatus.CREATED);
-        }
+            
+        } 
+        return response;
+
+
+       
     }
     @GetMapping("/{username}")
     public ResponseEntity<List<ContactDTO>> getAllContactList(@PathVariable("username") String username){
