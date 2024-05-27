@@ -63,6 +63,9 @@ public class Account {
     @Column(name = "balance")
     private double balance;
 
+    @Column(name = "currency")
+    private String currency;
+
     @Column(name = "initial_balance")
     private double initial_balance;
 

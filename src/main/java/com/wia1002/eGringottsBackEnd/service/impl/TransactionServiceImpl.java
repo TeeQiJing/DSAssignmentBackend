@@ -5,12 +5,14 @@ import com.wia1002.eGringottsBackEnd.model.Transaction;
 import com.wia1002.eGringottsBackEnd.repository.AccountRepository;
 import com.wia1002.eGringottsBackEnd.repository.TransactionRepository;
 import com.wia1002.eGringottsBackEnd.service.AccountService;
+import com.wia1002.eGringottsBackEnd.service.CurrencyService;
 import com.wia1002.eGringottsBackEnd.service.TransactionService;
 import com.wia1002.eGringottsBackEnd.exception.ResourceNotFoundException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.function.Function;
 
 import javax.management.RuntimeErrorException;
 
@@ -53,35 +55,57 @@ public class TransactionServiceImpl implements TransactionService {
     // }
 
     @Override
-public Transaction createTransaction(Transaction transaction) {
+    public Transaction createTransaction(Transaction transaction, double deduct_amount, double add_amount) {
     Account sender = accountService.getAccountById(transaction.getSender_account_number());
     Account receiver = accountService.getAccountById(transaction.getReceiver_account_number());
-    if (sender.getTrans_limit() >= transaction.getAmount()
-            && sender.getTrans_limit() > 0
-            && sender.getBalance() >= transaction.getAmount()) {
-
-        sender.setTrans_limit(sender.getTrans_limit() - transaction.getAmount());
-        sender.setBalance(sender.getBalance() - transaction.getAmount());
-        
-        receiver.setBalance(receiver.getBalance() + transaction.getAmount());
-        accountRepository.save(sender);
+    if(sender.equals(receiver)){
+        // sender.setBalance(sender.getBalance() + add_amount);
+        receiver.setBalance(receiver.getBalance() + add_amount);
+        // accountRepository.save(sender);
         accountRepository.save(receiver);
-        
-        // Set the date_of_trans, sender, receiver, sender_balance, and receiver_balance
+
+        transaction.setAmount(add_amount);
         transaction.setDate_of_trans(LocalDateTime.now());
         transaction.setSender(sender);
         transaction.setReceiver(receiver);
         transaction.setSender_balance(sender.getBalance());
         transaction.setReceiver_balance(receiver.getBalance());
-        
+
         Transaction savedTransaction = transactionRepository.save(transaction);
         return savedTransaction;
-    } else {
-        throw new RuntimeException("Insufficient Balance or Transaction Limit Exceeded!");
+    }else {
+        
+        if (sender.getTrans_limit() >= deduct_amount
+                && sender.getTrans_limit() > 0
+                && sender.getBalance() >= deduct_amount) {
+
+            sender.setTrans_limit(sender.getTrans_limit() - deduct_amount);
+            sender.setBalance(sender.getBalance() - deduct_amount);
+            
+            receiver.setBalance(receiver.getBalance() + add_amount);
+            accountRepository.save(sender);
+            accountRepository.save(receiver);
+
+        transaction.setAmount(add_amount);
+            
+            // Set the date_of_trans, sender, receiver, sender_balance, and receiver_balance
+            transaction.setDate_of_trans(LocalDateTime.now());
+            transaction.setSender(sender);
+            transaction.setReceiver(receiver);
+            transaction.setSender_balance(sender.getBalance());
+            transaction.setReceiver_balance(receiver.getBalance());
+            
+            Transaction savedTransaction = transactionRepository.save(transaction);
+            return savedTransaction;
+        } else {
+            throw new RuntimeException("Insufficient Balance or Transaction Limit Exceeded!");
+        }
     }
 }
 
 
+
+    
     @Override
     public List<Transaction> getAllTransaction(String account_number) {
         List<Transaction> transactions = transactionRepository.getTransactionsHistory(account_number);

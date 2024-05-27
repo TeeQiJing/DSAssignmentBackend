@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import org.springframework.web.client.RestTemplate;
 
 import com.wia1002.eGringottsBackEnd.model.Graph;
 import com.wia1002.eGringottsBackEnd.repository.CurrencyRepository;
@@ -18,7 +18,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
-@NoArgsConstructor
+// @NoArgsConstructor
 @Data
 
 @Service
@@ -72,10 +72,6 @@ public class CurrencyImpl implements CurrencyService{
         return currencyRepository.findUniqueCoins();
     }
 
-    @Override
-    public int getVertex(String str) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getVertex'");
-    }
-
+   
+ 
 }

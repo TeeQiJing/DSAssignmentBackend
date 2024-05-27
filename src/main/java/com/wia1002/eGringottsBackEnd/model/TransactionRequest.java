@@ -1,15 +1,23 @@
 package com.wia1002.eGringottsBackEnd.model;
 
+
+
+
 public class TransactionRequest {
-    private double amount;
+    private double deduct_amount;
+    private double add_amount;
     private String sender_account_number;
     private String receiver_account_number;
     private String reference;
     private String category;
 
-    // Constructor
-    public TransactionRequest(double amount, String sender_account_number, String receiver_account_number, String reference, String category) {
-        this.amount = amount;
+
+
+
+
+    public TransactionRequest(double deduct_amount, double add_amount, String sender_account_number, String receiver_account_number, String reference, String category) {
+        this.add_amount = add_amount;
+        this.deduct_amount = deduct_amount;
         this.sender_account_number = sender_account_number;
         this.receiver_account_number = receiver_account_number;
         this.reference = reference;
@@ -17,16 +25,42 @@ public class TransactionRequest {
     }
 
     // Getters and setters
-    public double getAmount() {
-        return amount;
-    }
 
-    public void setAmount(double amount) {
-        this.amount = amount;
-    }
 
     public String getSenderAccountNumber() {
         return sender_account_number;
+    }
+
+    public double getDeduct_amount() {
+        return deduct_amount;
+    }
+
+    public void setDeduct_amount(double deduct_amount) {
+        this.deduct_amount = deduct_amount;
+    }
+
+    public double getAdd_amount() {
+        return add_amount;
+    }
+
+    public void setAdd_amount(double add_amount) {
+        this.add_amount = add_amount;
+    }
+
+    public String getSender_account_number() {
+        return sender_account_number;
+    }
+
+    public void setSender_account_number(String sender_account_number) {
+        this.sender_account_number = sender_account_number;
+    }
+
+    public String getReceiver_account_number() {
+        return receiver_account_number;
+    }
+
+    public void setReceiver_account_number(String receiver_account_number) {
+        this.receiver_account_number = receiver_account_number;
     }
 
     public void setSenderAccountNumber(String sender_account_number) {

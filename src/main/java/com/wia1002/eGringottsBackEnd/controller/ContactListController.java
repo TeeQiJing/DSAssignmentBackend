@@ -26,16 +26,21 @@ import com.wia1002.eGringottsBackEnd.service.ContactListService;
 @CrossOrigin
 public class ContactListController {
     private ContactListService contactListService;
-
-    @PostMapping("/{username}/add")
-    public ResponseEntity<String> createTransaction(@PathVariable("username") String username, @RequestBody ContactList contactList) {
-        if(contactListService.isNewContact(username,contactList.getAccount_number())){
-            contactListService.createContact(username,contactList);
-            return new ResponseEntity<>("Hehhehheh",HttpStatus.CREATED);
-        }else{
-            return new ResponseEntity<>("NOOOOOOOOOOO",HttpStatus.CREATED);
-        }
+    @PostMapping("/{username}/{self_account_number}/{self_mobile}/add")
+public ResponseEntity<String> createTransaction(@PathVariable("username") String username, @PathVariable("self_account_number") String self_account_number, @PathVariable("self_mobile") String self_mobile, @RequestBody ContactList contactList) {
+    if(!contactListService.isRegistered(contactList.getAccount_number(), contactList.getContact_mobile())){
+        return new ResponseEntity<>("The User is Not Registered Yet!", HttpStatus.BAD_REQUEST);
     }
+    if (contactListService.isNewContact(username, contactList.getAccount_number(), contactList.getContact_mobile())) {
+        if (contactList.getAccount_number().equals(self_account_number) || contactList.getContact_mobile().equals(self_mobile)) {
+            return new ResponseEntity<>("Cannot Add Yourself In Contact List!", HttpStatus.BAD_REQUEST);
+        }
+        contactListService.createContact(username, contactList);
+        return new ResponseEntity<>("New Contact Added Successfully!", HttpStatus.CREATED);
+    } else {
+        return new ResponseEntity<>("This Account is Already in Your Contact List, Please Try Another Account", HttpStatus.BAD_REQUEST);
+    }
+}
     @GetMapping("/{username}")
     public ResponseEntity<List<ContactDTO>> getAllContactList(@PathVariable("username") String username){
         List<ContactDTO> contactList =contactListService.getAllContact(username);

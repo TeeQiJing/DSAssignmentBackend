@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.wia1002.eGringottsBackEnd.service.CurrencyService;
 import com.wia1002.eGringottsBackEnd.model.Currency;
+import com.wia1002.eGringottsBackEnd.repository.CurrencyRepository;
 
 @RestController
 @RequestMapping("currencyConversion")
@@ -24,6 +25,9 @@ public class CurrencyController {
 
     @Autowired
     private CurrencyService currencyService;
+
+    @Autowired
+    private CurrencyRepository currencyRepository;
 
     @PostMapping("/addCurrency")
     public ResponseEntity<String> addCurrency(@RequestBody Currency currency) {
@@ -39,6 +43,11 @@ public class CurrencyController {
     @GetMapping("/printCurrency/{currency1}/{currency2}")
     public Double[] conversion(@PathVariable String currency1, @PathVariable String currency2) {
         return currencyService.printCurrency(currency1, currency2);
+    }
+
+    @GetMapping("/getAllCurrency")
+    public List<Currency> getAllCurrency() {
+        return currencyRepository.findAll();
     }
 
     @DeleteMapping("/deleteCurrency/{number}")

@@ -37,13 +37,22 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
                         @Param("startDate") LocalDateTime startDate,
                         @Param("endDate") LocalDateTime endDate);
 
-        @Query("SELECT SUM(CASE WHEN t.category = 'Food' THEN t.amount ELSE 0 END) AS foodAmount, "+
-        "SUM(CASE WHEN t.category = 'Education' THEN t.amount ELSE 0 END) AS eduAmount, "+
-        "SUM(CASE WHEN t.category = 'Game' THEN t.amount ELSE 0 END) AS gameAmount, "+
-        "SUM(CASE WHEN t.category = 'Business' THEN t.amount ELSE 0 END) AS businessAmount, "+ 
-        "SUM(CASE WHEN t.category = 'Others' THEN t.amount ELSE 0 END) AS otherAmount "+
+        @Query("SELECT t "+
  "FROM Transaction t "+
- "WHERE t.category IN ('Food', 'Education', 'Game', 'Business', 'Other') "+
+ "WHERE t.category IN ('Food', 'Education', 'Game', 'Business', 'Others') "+
  "AND t.sender_account_number = :accountNumber") 
-        Object[] getPieData(@Param("accountNumber") String accountNumber);
+        List<Transaction> getPieData(@Param("accountNumber") String accountNumber);
+
+
+        @Query("select t.transaction_id from Transaction t where DATE_FORMAT(t.date_of_trans, '%Y-%m-%d %H:%i:%s') = ?1")
+        List<Long> findTransactionIdByDateOfTransString(String dateOfTransString);
+
+        @Query("select t from Transaction t ORDER BY t.date_of_trans ASC")
+        List<Transaction> getAllTransaction();
+
+        @Query("SELECT t from Transaction t ORDER BY t.date_of_trans DESC")
+        List<Transaction> getRecentTransaction();
+
+        @Query("SELECT t FROM Transaction t WHERE t.sender_account_number = :account_number OR t.receiver_account_number = :account_number ORDER BY t.date_of_trans DESC")
+        List<Transaction> getRecentTransactionUser(@Param("account_number") String account_number);
 }
