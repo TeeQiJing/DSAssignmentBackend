@@ -28,9 +28,7 @@ public class Graph {
 
    public void loadDatabase() {
       List<Currency> list = currencyRepository.findAll();
-      System.out.println("uefeefehgueiuvgregrengreirevre "+list.size());
        for (int i = 0; i < list.size(); i++) {
-         System.out.println("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK");
            addVertex(list.get(i).getSourceCoin());
            addVertex(list.get(i).getDestinationCoin());
            addEdge(list.get(i).getSourceCoin(), list.get(i).getDestinationCoin(), list.get(i).getValue(), list.get(i).getProcessingFee());
