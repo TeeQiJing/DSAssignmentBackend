@@ -28,12 +28,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.wia1002.eGringottsBackEnd.model.Account;
 import com.wia1002.eGringottsBackEnd.model.ConfirmationToken;
+import com.wia1002.eGringottsBackEnd.model.Goblin;
 import com.wia1002.eGringottsBackEnd.model.UserAvatar;
-// import com.wia1002.eGringottsBackEnd.model.Card;
+import com.wia1002.eGringottsBackEnd.model.Card;
 // import com.wia1002.eGringottsBackEnd.model.ConfirmationToken;
 // import com.wia1002.eGringottsBackEnd.model.UserAvatar;
 import com.wia1002.eGringottsBackEnd.repository.AccountRepository;
 import com.wia1002.eGringottsBackEnd.repository.ConfirmationTokenRepository;
+import com.wia1002.eGringottsBackEnd.repository.GoblinRepository;
 // import com.wia1002.eGringottsBackEnd.repository.CardRepository;
 // import com.wia1002.eGringottsBackEnd.repository.ConfirmationTokenRepository;
 // import com.wia1002.eGringottsBackEnd.repository.UserAvatarRepository;
@@ -67,6 +69,8 @@ public class AccountController {
 
     @Autowired
     private AccountRepository accountRepository;
+    @Autowired
+    private GoblinRepository goblinRepository;
 
     @Autowired
 	private EmailSenderDemo senderService;
@@ -125,6 +129,7 @@ public class AccountController {
       return accountService.confirmEmail(token);
 
     }
+ 
 
     // @RequestMapping(value="/confirm-account", method= {RequestMethod.GET, RequestMethod.POST})
     // public ResponseEntity<?> confirmUserAccount(@RequestParam("accountNumber")String accountNumber) {
@@ -164,10 +169,10 @@ public class AccountController {
 
     }
 
-    @GetMapping("/login")
+    @GetMapping("/login/{email}/{password}")
     public ResponseEntity<Account> getAccountByUsernameAndPassword(
-            @RequestParam("email") String email,
-            @RequestParam("password") String password) {
+            @PathVariable("email") String email,
+            @PathVariable("password") String password) {
 
         List<Account> accounts = accountRepository.findByEmailAndPassword(email, password);
 
@@ -178,6 +183,32 @@ public class AccountController {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
+    }
+
+    @GetMapping("/loginadmin/{email}/{password}")
+    public ResponseEntity<Goblin> getAdminByUsernameAndPassword(
+            @PathVariable("email") String email,
+            @PathVariable("password") String password) {
+
+        List<Goblin> goblins = goblinRepository.getGoblinByEmailAndPassword(email, password);
+
+        if (goblins.size() == 1) {
+            Goblin goblin = goblins.get(0);
+            
+
+            return ResponseEntity.ok(goblin);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    @PostMapping("/adminsignup")
+    public ResponseEntity<Goblin> newAdmin(@RequestBody Goblin newAdmin) {
+        if(goblinRepository.findById(newAdmin.getEmail()).isPresent())
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+
+        Goblin goblin = goblinRepository.save(newAdmin);
+        return ResponseEntity.ok(goblin);
     }
 
     // @PostMapping("/sendEmail")

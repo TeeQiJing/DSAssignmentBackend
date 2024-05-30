@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.RequestEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.wia1002.eGringottsBackEnd.model.ContactDTO;
@@ -26,8 +30,9 @@ public class ContactListImpl implements ContactListService{
     private UserAvatarRepository userAvatarRepository ;
     
     @Override
-    public ContactList createContact(String username,ContactList contactList){
+    public ResponseEntity<ContactList> createContact(String username,ContactList contactList){
         contactList.setUsername(username);
+        
         ContactList savedContactList=contactListRepository.save(contactList);
         return savedContactList;
     }
@@ -58,8 +63,19 @@ public class ContactListImpl implements ContactListService{
         // contactList=contactListRepository.getContactListsByUserCreatedName(username, category);
         return contactDTO;
     }
+    // @Override
+    // public boolean isNewContact(String username,String test){
+    //     return contactListRepository.getPeopleFromContact(username,test).isEmpty() &&!accountRepository.getPeopleFromAccount(test).isEmpty();
+    // }
     @Override
-    public boolean isNewContact(String username,String test){
-        return contactListRepository.getPeopleFromContact(username,test).isEmpty()&&!accountRepository.getPeopleFromAccount(test).isEmpty();
+    public boolean isNewContact(String username,String account_number, String mobile){
+        return contactListRepository.getPeopleFromContact(username,account_number, mobile).isEmpty();
     }
+
+    @Override
+    public boolean isRegistered(String account_number,String mobile){
+        return accountRepository.findByAccountNumberAndMobile(account_number, mobile).size()==1;
+    }
+
+
 }

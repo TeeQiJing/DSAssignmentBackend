@@ -1,5 +1,6 @@
 package com.wia1002.eGringottsBackEnd.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import com.wia1002.eGringottsBackEnd.repository.CardRepository;
 import com.wia1002.eGringottsBackEnd.repository.ConfirmationTokenRepository;
 import com.wia1002.eGringottsBackEnd.repository.UserAvatarRepository;
 import com.wia1002.eGringottsBackEnd.service.AccountService;
+import com.wia1002.eGringottsBackEnd.service.CurrencyService;
 import com.wia1002.eGringottsBackEnd.service.EmailService;
 
 import lombok.AllArgsConstructor;
@@ -42,6 +44,8 @@ public class AccountServiceImpl implements AccountService {
     @Autowired
     EmailService emailService;
 
+    @Autowired
+    private CurrencyService currencyService;
     
   
 
@@ -55,19 +59,24 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Account createAccount(Account account) {
-        if (account.getBalance() >= 1000000) {
-            account.setTrans_limit(10000);
-            account.setAccount_type("Platinum Patronus");
-            account.setInterest_rate(0.10);
-        } else if (account.getBalance() >= 300000) {
-            account.setTrans_limit(8000);
-            account.setAccount_type("Golden Galleon");
-            account.setInterest_rate(0.04);
-        } else {
-            account.setTrans_limit(5000);
-            account.setAccount_type("Silver Snitch");
-            account.setInterest_rate(0.02);
-        }
+        
+            if (currencyService.conversion(account.getCurrency(), "Knut", account.getBalance())[0] >= 10000) {
+                account.setTrans_limit(currencyService.conversion("Knut", account.getCurrency(), 5000)[0]);
+                account.setAccount_type("Platinum Patronus");
+                account.setInterest_rate(0.10);
+            } else if (currencyService.conversion(account.getCurrency(), "Knut", account.getBalance())[0] >= 8000) {
+                account.setTrans_limit(currencyService.conversion("Knut", account.getCurrency(), 3000)[0]);
+                account.setAccount_type("Golden Galleon");
+                account.setInterest_rate(0.04);
+            } else {
+                account.setTrans_limit(currencyService.conversion("Knut", account.getCurrency(), 1000)[0]);
+                account.setAccount_type("Silver Snitch");
+                account.setInterest_rate(0.02);
+            }
+        
+        account.setRegister_date(LocalDateTime.now());
+        account.setInitial_balance(account.getBalance());
+
 
         // account.setPassword(passwordEncoder.encode(account.getPassword()));
         
