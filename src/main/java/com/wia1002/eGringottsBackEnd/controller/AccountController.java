@@ -1,5 +1,8 @@
 package com.wia1002.eGringottsBackEnd.controller;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 // import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -41,6 +44,7 @@ import com.wia1002.eGringottsBackEnd.repository.GoblinRepository;
 // import com.wia1002.eGringottsBackEnd.repository.UserAvatarRepository;
 import com.wia1002.eGringottsBackEnd.service.AccountService;
 import com.wia1002.eGringottsBackEnd.service.CardService;
+import com.wia1002.eGringottsBackEnd.service.CurrencyService;
 import com.wia1002.eGringottsBackEnd.service.EmailSenderDemo;
 import com.wia1002.eGringottsBackEnd.service.TransactionService;
 // import com.wia1002.eGringottsBackEnd.service.EmailService;
@@ -74,6 +78,9 @@ public class AccountController {
 
     @Autowired
 	private EmailSenderDemo senderService;
+
+    @Autowired
+    private CurrencyService currencyService;
 
     @Autowired
     private ConfirmationTokenRepository confirmationTokenRepository;
@@ -168,6 +175,36 @@ public class AccountController {
 
     }
 
+    @GetMapping("/resetlimit/{account_number}")
+    public ResponseEntity<Account> resetLimit(@PathVariable("account_number") String account_number) {
+        Account account = accountService.getAccountById(account_number);
+
+        if (account == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        LocalDate today = LocalDate.now();
+        LocalDate signinDate = account.getSignin_date();
+
+        if (!today.equals(signinDate) || signinDate == null) {
+            if (account.getAccount_type().equals("Platinum Patronus")) {
+                account.setTrans_limit(currencyService.conversion("Knut", account.getCurrency(), 5000)[0]);
+            } else if (account.getAccount_type().equals("Golden Galleon")) {
+                account.setTrans_limit(currencyService.conversion("Knut", account.getCurrency(),  3000)[0]);
+            } else if (account.getAccount_type().equals("Silver Snitch")) {
+                account.setTrans_limit(currencyService.conversion("Knut", account.getCurrency(), 1000)[0]);
+            }
+
+            // Update the signin_date to today
+            account.setSignin_date(today);
+            // Save the updated account
+            accountService.saveAccount(account);
+        }
+
+        return new ResponseEntity<>(account, HttpStatus.OK);
+    }
+    
+
     @GetMapping("/login/{email}/{password}")
     public ResponseEntity<Account> getAccountByUsernameAndPassword(
             @PathVariable("email") String email,
@@ -209,6 +246,7 @@ public class AccountController {
         Goblin goblin = goblinRepository.save(newAdmin);
         return ResponseEntity.ok(goblin);
     }
+}
 
     // @PostMapping("/sendEmail")
     // @EventListener(ApplicationReadyEvent.class)
@@ -286,5 +324,5 @@ public class AccountController {
 
     //     return modelAndView;
     // }
+    
 
-}
