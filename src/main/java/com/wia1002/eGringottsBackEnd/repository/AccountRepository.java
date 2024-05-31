@@ -13,8 +13,8 @@ import com.wia1002.eGringottsBackEnd.model.Card;
 
 @Repository
 public interface AccountRepository extends JpaRepository<Account, String>{
-    @Query("SELECT t FROM Account t WHERE t.account_number=:test")
-    List<Account> getPeopleFromAccount(@Param("test") String test);
+    @Query("SELECT t FROM Account t WHERE t.account_number=:account_number AND t.mobile=:mobile")
+    List<Account> getPeopleByAccountNumberAndMobile(@Param("account_number") String account_number, @Param("mobile") String mobile);
     
     @Query("SELECT u FROM Account u WHERE u.email = :email AND u.password = :password")
     List<Account> findByEmailAndPassword(String email, String password);

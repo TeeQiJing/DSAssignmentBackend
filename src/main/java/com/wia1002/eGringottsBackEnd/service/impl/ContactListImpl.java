@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.RequestEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.wia1002.eGringottsBackEnd.model.ContactDTO;
@@ -26,7 +30,7 @@ public class ContactListImpl implements ContactListService{
     private UserAvatarRepository userAvatarRepository ;
     
     @Override
-    public ContactList createContact(String username,ContactList contactList){
+    public ResponseEntity<ContactList> createContact(String username,ContactList contactList){
         contactList.setUsername(username);
         
         ContactList savedContactList=contactListRepository.save(contactList);

@@ -33,7 +33,7 @@ import com.wia1002.eGringottsBackEnd.model.Account;
 import com.wia1002.eGringottsBackEnd.model.ConfirmationToken;
 import com.wia1002.eGringottsBackEnd.model.Goblin;
 import com.wia1002.eGringottsBackEnd.model.UserAvatar;
-// import com.wia1002.eGringottsBackEnd.model.Card;
+import com.wia1002.eGringottsBackEnd.model.Card;
 // import com.wia1002.eGringottsBackEnd.model.ConfirmationToken;
 // import com.wia1002.eGringottsBackEnd.model.UserAvatar;
 import com.wia1002.eGringottsBackEnd.repository.AccountRepository;
@@ -136,6 +136,7 @@ public class AccountController {
       return accountService.confirmEmail(token);
 
     }
+ 
 
     // @RequestMapping(value="/confirm-account", method= {RequestMethod.GET, RequestMethod.POST})
     // public ResponseEntity<?> confirmUserAccount(@RequestParam("accountNumber")String accountNumber) {
