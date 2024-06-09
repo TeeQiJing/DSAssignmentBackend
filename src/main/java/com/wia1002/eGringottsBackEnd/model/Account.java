@@ -2,6 +2,7 @@ package com.wia1002.eGringottsBackEnd.model;
 
 
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -73,7 +74,8 @@ public class Account {
     private String account_type;
 
     @Column(name = "signin_date")
-    private String signin_date;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate signin_date;
 
     @Column(name = "register_date")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss")
