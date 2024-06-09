@@ -8,7 +8,7 @@ import com.wia1002.eGringottsBackEnd.model.ContactDTO;
 import com.wia1002.eGringottsBackEnd.model.ContactList;
 
 public interface ContactListService {
-    ResponseEntity<ContactList> createContact(String username,ContactList contactList);
+    ContactList createContact(String username,ContactList contactList);
     List<ContactDTO> getAllContact(String account_number);
     List<ContactDTO> getContactListByCategory(String username, String category);
     boolean isNewContact(String username,String account_number, String mobile);

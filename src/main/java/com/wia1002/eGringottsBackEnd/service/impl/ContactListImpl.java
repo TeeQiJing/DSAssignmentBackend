@@ -30,7 +30,7 @@ public class ContactListImpl implements ContactListService{
     private UserAvatarRepository userAvatarRepository ;
     
     @Override
-    public ResponseEntity<ContactList> createContact(String username,ContactList contactList){
+    public ContactList createContact(String username,ContactList contactList){
         contactList.setUsername(username);
         
         ContactList savedContactList=contactListRepository.save(contactList);
