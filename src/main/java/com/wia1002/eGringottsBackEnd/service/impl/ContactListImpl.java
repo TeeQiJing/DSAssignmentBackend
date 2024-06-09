@@ -34,7 +34,7 @@ public class ContactListImpl implements ContactListService{
         contactList.setUsername(username);
         
         ContactList savedContactList=contactListRepository.save(contactList);
-        return ResponseEntity.ok(savedContactList);
+        return savedContactList;
     }
     @Override
     public List<ContactDTO> getAllContact(String username){
